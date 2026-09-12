@@ -1,0 +1,30 @@
+{
+  "lunar_water": {
+    "subtitles": "sounds.nyx_rotl.lunar_water",
+    "sounds": ["nyx_rotl:lunar_water"]
+  },
+  "falling_star": {
+    "subtitles": "sounds.nyx_rotl.falling_star",
+    "sounds": ["nyx_rotl:falling_star"]
+  },
+  "falling_star_impact": {
+    "subtitles": "sounds.nyx_rotl.falling_star_impact",
+    "sounds": ["nyx_rotl:falling_star_impact"]
+  },
+  "falling_meteor": {
+    "subtitles": "sounds.nyx_rotl.falling_meteor",
+    "sounds": ["nyx_rotl:falling_meteor"]
+  },
+  "falling_meteor_impact": {
+    "subtitles": "sounds.nyx_rotl.falling_meteor_impact",
+    "sounds": ["nyx_rotl:falling_meteor_impact"]
+  },
+  "hammer_start": {
+    "subtitles": "sounds.nyx_rotl.hammer_start",
+    "sounds": ["nyx_rotl:hammer_start"]
+  },
+  "hammer_end": {
+    "subtitles": "sounds.nyx_rotl.hammer_end",
+    "sounds": ["nyx_rotl:hammer_end"]
+  }
+}

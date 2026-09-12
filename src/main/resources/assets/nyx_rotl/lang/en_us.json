@@ -1,0 +1,20 @@
+{
+  "creativetab.nyx_rotl": "Nyx: Rise of the Light",
+  "info.nyx_rotl.meteor": "A meteor has fallen nearby!",
+
+  "item.nyx_rotl.lunar_water_bucket": "Lunar Water Bucket",
+  "item.nyx_rotl.lunar_water_bottle": "Lunar Water Bottle",
+  "item.nyx_rotl.meteor_axe": "Meteor Axe",
+  "item.nyx_rotl.fallen_star": "Fallen Star",
+
+  "block.nyx_rotl.lunar_water_cauldron": "Lunar Water Cauldron",
+  "block.nyx_rotl.lunar_water": "Lunar Water",
+
+  "sounds.nyx_rotl.falling_meteor": "Falling Meteor",
+  "sounds.nyx_rotl.falling_star": "Falling Star",
+  "sounds.nyx_rotl.falling_meteor_impact": "Meteor Landed",
+  "sounds.nyx_rotl.falling_stat_impact": "Star Landed",
+  "sounds.nyx_rotl.lunar_water": "Lunar Water",
+  "sounds.nyx_rotl.hammer_end": "Meteor Hammer End",
+  "sounds.nyx_rotl.hammer_start": "Meteor Hammer Start"
+}
