@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "nyx_rotl:item/meteor_shovel"
+  }
+}

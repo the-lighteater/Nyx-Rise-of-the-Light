@@ -2,6 +2,7 @@ package dot.lighteater.nyx_rotl.datagen;
 
 
 import dot.lighteater.nyx_rotl.blocks.ModBlocks;
+import dot.lighteater.nyx_rotl.item.ModItems;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlagSet;
@@ -35,6 +36,8 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(ModBlocks.LUNAR_WATER.get());
 
         this.dropOther(ModBlocks.LUNAR_WATER_CAULDRON.get(), Blocks.CAULDRON);
+
+        this.dropOther(ModBlocks.METEOR_ROCK.get(), ModItems.METEOR_SHARD.get());
 
     }
 

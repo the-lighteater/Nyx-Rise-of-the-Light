@@ -6,7 +6,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -21,16 +24,13 @@ public class ModCreativeModTabs {
             .title(Component.translatable("creativetab.nyx_rotl"))
             .displayItems((parameters, output) -> {
 
-                output.accept(ModItems.METEOR_AXE.get());
+                for (RegistryObject<Block> block : ModBlocks.BLOCKS.getEntries()) {
+                    output.accept(block.get());
+                }
 
-                output.accept(ModItems.FALLEN_STAR.get());
-
-                output.accept(ModItems.LUNAR_WATER_BUCKET.get());
-
-                output.accept(ModItems.LUNAR_WATER_BOTTLE.get());
-
-                output.accept(ModBlocks.LUNAR_WATER_CAULDRON.get());
-                output.accept(ModBlocks.METEOR_GLASS.get());
+                for (RegistryObject<Item> item : ModItems.ITEMS.getEntries()) {
+                    output.accept(item.get());
+                }
 
             }).build());
 
