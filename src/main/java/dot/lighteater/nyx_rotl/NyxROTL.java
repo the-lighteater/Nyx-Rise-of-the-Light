@@ -9,11 +9,13 @@ import dot.lighteater.nyx_rotl.fluid.ModFluidTypes;
 import dot.lighteater.nyx_rotl.fluid.ModFluids;
 import dot.lighteater.nyx_rotl.item.ModCreativeModTabs;
 import dot.lighteater.nyx_rotl.item.ModItems;
+import dot.lighteater.nyx_rotl.network.PacketHandler;
 import dot.lighteater.nyx_rotl.registry.ModEntities;
 import dot.lighteater.nyx_rotl.registry.ModSounds;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.server.packs.repository.Pack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -46,6 +48,8 @@ public class NyxROTL
 
         ModFluids.register(modEventBus);
         ModFluidTypes.register(modEventBus);
+
+        PacketHandler.init();
 
 
         ModEntities.register(modEventBus);

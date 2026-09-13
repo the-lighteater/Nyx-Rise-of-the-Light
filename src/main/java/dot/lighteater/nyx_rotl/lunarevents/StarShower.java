@@ -12,37 +12,35 @@ public class StarShower extends LunarEvent {
         super("star_shower");
     }
 
-    // 🌟 start message
     @Override
     public Component getStartMessage() {
-        return Component.translatable("info." + NyxROTL.MODID + ".star_shower")
-                .withStyle(ChatFormatting.GOLD, ChatFormatting.ITALIC);
+        return Component.translatable(
+                "info." + NyxROTL.MODID + ".star_shower"
+        ).withStyle(
+                ChatFormatting.GOLD,
+                ChatFormatting.ITALIC
+        );
     }
 
-    // 🌙 start condition
     @Override
     public boolean shouldStart(Level level, boolean lastDaytime) {
-        if (!lastDaytime || level.isDay()) return false;
-
-        // delegate to config system (now externalized)
-        return this.shouldStart(level, lastDaytime);
+        // Temporary test:
+        // Start when night begins.
+        return lastDaytime && !level.isDay();
     }
 
-    // 🌞 stop condition
     @Override
     public boolean shouldStop(Level level, boolean lastDaytime) {
         return level.isDay();
     }
 
-    // 🎨 sky tint
     @Override
     public int getSkyColor() {
         return Config.colorStarShower.get();
     }
 
-    // tick hook (optional behavior per event)
     @Override
-    public void tick(Level level, LunarEventData data, boolean lastDaytime) {
-        this.tick(level, data, lastDaytime);
+    public void tick(Level level, boolean lastDaytime) {
+        // Nothing yet.
     }
 }

@@ -1,7 +1,10 @@
 package dot.lighteater.nyx_rotl.capabilities;
 
+import dot.lighteater.nyx_rotl.NyxROTL;
 import dot.lighteater.nyx_rotl.lunarevents.LunarEvent;
 import dot.lighteater.nyx_rotl.lunarevents.StarShower;
+import dot.lighteater.nyx_rotl.network.PacketHandler;
+import dot.lighteater.nyx_rotl.network.PacketNyxWorld;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceLocation;
@@ -17,11 +20,18 @@ public class NyxWorld extends SavedData {
     public static final String NAME = "nyx_world";
 
     public final List<LunarEvent> events = new ArrayList<>();
-    public static String currentEvent = null;
+
+    public String currentEvent = null;
     public boolean wasDaytime = false;
 
-    public static float eventSkyModifier = 0f;
-    public static int eventSkyColor = 0;
+    public boolean init = false;
+
+    public float eventSkyModifier = 0f;
+    public int eventSkyColor = 0;
+
+    public static String clientCurrentEvent = null;
+    public static int clientEventSkyColor = 0;
+    public static float clientEventSkyModifier = 0f;
 
     public final Set<BlockPos> cachedMeteorPositions = new HashSet<>();
     public final Set<BlockPos> meteorLandingSites = new HashSet<>();
@@ -133,44 +143,77 @@ public class NyxWorld extends SavedData {
     // -----------------------------------
     public void tick(ServerLevel level) {
 
-        long time = level.getGameTime();
+        boolean isDay = level.isDay();
 
-        if (time % 200 == 0) {
-            visitedDimensions.add(level.dimension().location());
+        if (!init) {
+            wasDaytime = isDay;
+            init = true;
+            return;
         }
 
-        float moonPhase = level.getMoonBrightness();
-
-        boolean isDay = level.isDay();
         boolean lastDay = wasDaytime;
         wasDaytime = isDay;
 
+        // Give events their tick
         for (LunarEvent event : events) {
-            event.tick(level, null, lastDay);
+            event.tick(level, lastDay);
         }
 
+        // Start an event
         if (currentEvent == null) {
+
             for (LunarEvent event : events) {
+
                 if (event.shouldStart(level, lastDay)) {
+
                     currentEvent = event.name;
                     eventSkyColor = event.getSkyColor();
+
+                    NyxROTL.LOGGER.info(
+                            "Lunar event started: {}",
+                            currentEvent
+                    );
+
+                    sendToClients();
+                    setDirty();
+
                     break;
                 }
             }
         }
 
+        // Stop current event
         if (currentEvent != null) {
+
             LunarEvent active = events.stream()
-                    .filter(e -> e.name.equals(currentEvent))
+                    .filter(event -> event.name.equals(currentEvent))
                     .findFirst()
                     .orElse(null);
 
             if (active != null && active.shouldStop(level, lastDay)) {
+
+                NyxROTL.LOGGER.info(
+                        "Lunar event stopped: {}",
+                        currentEvent
+                );
+
                 currentEvent = null;
+                eventSkyColor = 0;
+
+                sendToClients();
+                setDirty();
             }
         }
+    }
 
-        setDirty();
+    private void sendToClients() {
+        PacketHandler.sendToAll(
+                new PacketNyxWorld(
+                        currentEvent,
+                        eventSkyColor,
+                        eventSkyModifier
+                )
+        );
     }
 }
 

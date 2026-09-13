@@ -1,5 +1,6 @@
 package dot.lighteater.nyx_rotl.network;
 
+import dot.lighteater.nyx_rotl.NyxROTL;
 import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -35,14 +36,17 @@ public class PacketNyxWorld {
 
     public static void handle(PacketNyxWorld msg, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            Minecraft mc = Minecraft.getInstance();
+            NyxWorld.clientCurrentEvent =
+                    msg.event.isEmpty() ? null : msg.event;
 
-            if (mc.level != null) {
-                NyxWorld.currentEvent = msg.event.isEmpty() ? null : msg.event;
-                NyxWorld.eventSkyColor = msg.skyColor;
-                NyxWorld.eventSkyModifier = msg.skyModifier;
-            }
+            NyxWorld.clientEventSkyColor = msg.skyColor;
+            NyxWorld.clientEventSkyModifier = msg.skyModifier;
         });
+
+        NyxROTL.LOGGER.info(
+                "Client received lunar event: {}",
+                msg.event
+        );
 
         ctx.get().setPacketHandled(true);
     }

@@ -169,6 +169,10 @@ public class ModEvents {
             return;
         }
 
+        NyxWorld data = NyxWorld.get(level);
+
+        data.tick(level);
+
         LunarWaterConversion.tick(level);
 
         for (BlockPos pos : LunarWaterConversion.getIncensedCauldrons(level)) {
