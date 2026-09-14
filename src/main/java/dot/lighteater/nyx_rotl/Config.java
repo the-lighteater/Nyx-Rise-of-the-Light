@@ -1,8 +1,10 @@
 package dot.lighteater.nyx_rotl;
 
+import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -69,17 +71,17 @@ public class Config
 //    public static final ForgeConfigSpec.IntValue bloodMoonInterval;
 //    public static final ForgeConfigSpec.IntValue bloodMoonGraceDays;
 //    public static final ForgeConfigSpec.ConfigValue<Integer[]> lunarWaterTicks;
-//    public static final ForgeConfigSpec.DoubleValue meteorChance;
-//    public static final ForgeConfigSpec.DoubleValue meteorChanceNight;
-//    public static final ForgeConfigSpec.IntValue meteroGateDimension;
-//    public static final ForgeConfigSpec.DoubleValue meteorChanceAfterGate;
-//    public static final ForgeConfigSpec.DoubleValue meteorChanceAfterGateNight;
-//    public static final ForgeConfigSpec.DoubleValue meteorChanceStarShower;
-//    public static final ForgeConfigSpec.DoubleValue meteorChanceEnd;
-//    public static final ForgeConfigSpec.IntValue meteorSpawnRadius;
-//    public static final ForgeConfigSpec.BooleanValue meteors;
-//    public static final ForgeConfigSpec.IntValue meteorDisallowRadius;
-//    public static final ForgeConfigSpec.IntValue meteorDisallowTime;
+    public static final ForgeConfigSpec.DoubleValue meteorChance;
+    public static final ForgeConfigSpec.DoubleValue meteorChanceNight;
+    public static final ForgeConfigSpec.ConfigValue<String> meteorGateDimension;
+    public static final ForgeConfigSpec.DoubleValue meteorChanceAfterGate;
+    public static final ForgeConfigSpec.DoubleValue meteorChanceAfterGateNight;
+    public static final ForgeConfigSpec.DoubleValue meteorChanceStarShower;
+    public static final ForgeConfigSpec.DoubleValue meteorChanceEnd;
+    public static final ForgeConfigSpec.IntValue meteorSpawnRadius;
+    public static final ForgeConfigSpec.BooleanValue meteors;
+    public static final ForgeConfigSpec.IntValue meteorDisallowRadius;
+    public static final ForgeConfigSpec.IntValue meteorDisallowTime;
 //    public static final ForgeConfigSpec.ConfigValue<Set<Integer>> meteorSpawnDimensions;
 //    public static final ForgeConfigSpec.BooleanValue meteorCacheEnabled;
 //    public static final ForgeConfigSpec.BooleanValue meteorCacheUnloaded;
@@ -97,6 +99,7 @@ public class Config
 //
 //    public static final ForgeConfigSpec.ConfigValue<Set<LunarWaterSource>> lunarWaterRemoveNegative;
 //    public static final ForgeConfigSpec.ConfigValue<Set<LunarWaterSource>> lunarWaterRemoveAll;
+
 
     public static final ForgeConfigSpec.IntValue colorStarShower;
 
@@ -187,8 +190,77 @@ public class Config
 
         BUILDER.push("Meteors");
 
-        meteorShardGuardianChance = BUILDER.comment("The chance in percent (1 = 100%) for a meteor shard to be dropped from an elder guardian")
-                        .defineInRange("Meteor Shard Guardian Chance", 0.05, 0, 1);
+        meteors = BUILDER.comment(
+                "If meteor content should be enabled"
+        ).define(
+                "Meteors", true
+        );
+
+        meteorChance = BUILDER.comment(
+                "The chance of a meteor spawning every second, during the day"
+        ).defineInRange(
+                "Meteor Chance", 0.00014, 0, 1
+        );
+
+        meteorChanceNight = BUILDER.comment(
+                "The chance of a meteor spawning every second, during nighttime"
+        ).defineInRange(
+                "Meteor Chance Night", 0.0024, 0, 1
+        );
+
+        meteorGateDimension = BUILDER.comment(
+                "The dimension that needs to be entered to increase the spawning of meteors"
+        ).define(
+                "Meteor Gate Dimension", "minecraft:the_nether"
+        );
+
+        meteorChanceAfterGate = BUILDER.comment(
+                "The chance of a meteor spawning every second, during the day, after the gate dimension has been entered once"
+        ).defineInRange(
+                "Meteor Chance After Gate", 0.0002, 0, 1
+        );
+
+        meteorChanceAfterGateNight = BUILDER.comment(
+                "The chance of a meteor spawning every second, during nighttime, after the gate dimension has been entered once"
+        ).defineInRange(
+                "Meteor Chance After Gate Night", 0.003, 0, 1
+        );
+
+        meteorChanceStarShower = BUILDER.comment(
+                "The chance of a meteor spawning every second, during a star shower"
+        ).defineInRange(
+                "Meteor Chance Star Shower", 0.0075, 0, 1
+        );
+
+        meteorChanceEnd = BUILDER.comment(
+                "The chance of a meteor spawning every second, in the End dimension"
+        ).defineInRange(
+                "Meteor Chance End", 0.003, 0, 1
+        );
+
+        meteorSpawnRadius = BUILDER.comment(
+                "The amount of blocks a meteor can spawn away from the nearest player"
+        ).defineInRange(
+                "Meteor Spawn Radius", 1000, 1, 10000
+        );
+
+        meteorDisallowRadius = BUILDER.comment(
+                "The radius in chunks that should be marked as invalid for meteor spawning around each player"
+        ).defineInRange(
+                "Meteor Disallow Radius", 16, 0, 1000
+        );
+
+        meteorDisallowTime = BUILDER.comment(
+                "The amount of ticks that need to pass for each player until the chance of a meteor spawning in the area is halved"
+        ).defineInRange(
+                "Meteor Disallow Time", 12000, 1, Integer.MAX_VALUE
+        );
+
+        meteorShardGuardianChance = BUILDER.comment(
+                "The chance in percent (1 = 100%) for a meteor shard to be dropped from an elder guardian"
+        ).defineInRange(
+                "Meteor Shard Guardian Chance", 0.05, 0, 1
+        );
 
         BUILDER.pop();
 
@@ -223,6 +295,38 @@ public class Config
         BUILDER.pop();
 
         SPEC = BUILDER.build();
+    }
+
+    public static double getMeteorChance(ServerLevel level, NyxWorld data) {
+        ResourceLocation dimension = level.dimension().location();
+
+        // The End always uses its own meteor chance.
+        if (dimension.equals(Level.END.location())) {
+            return meteorChanceEnd.get();
+        }
+
+        // Meteors are only allowed in configured dimensions.
+        if (!getAllowedDimensions().contains(level.dimension())) {
+            return 0;
+        }
+
+        boolean visitedGate = data.visitedDimensions.contains(
+                new ResourceLocation(meteorGateDimension.get())
+        );
+
+        if (!level.isDay()) {
+            if ("star_shower".equals(data.currentEvent)) {
+                return meteorChanceStarShower.get();
+            }
+
+            return visitedGate
+                    ? meteorChanceAfterGateNight.get()
+                    : meteorChanceNight.get();
+        }
+
+        return visitedGate
+                ? meteorChanceAfterGate.get()
+                : meteorChance.get();
     }
 
     public static Set<ResourceKey<Level>> getAllowedDimensions() {

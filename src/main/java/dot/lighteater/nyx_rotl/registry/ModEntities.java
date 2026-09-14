@@ -15,11 +15,11 @@ public class ModEntities {
             DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, NyxROTL.MODID);
 
     public static final RegistryObject<EntityType<FallingStar>> FALLING_STAR =
-            ENTITY_TYPES.register("falling_star", () -> EntityType.Builder.of(FallingStar::new, MobCategory.CREATURE)
+            ENTITY_TYPES.register("falling_star", () -> EntityType.Builder.of(FallingStar::new, MobCategory.MISC)
                     .sized(2.5f, 2.5f).build("falling_star"));
 
     public static final RegistryObject<EntityType<FallingMeteor>> FALLING_METEOR =
-            ENTITY_TYPES.register("falling_meteor", () -> EntityType.Builder.of(FallingMeteor::new, MobCategory.CREATURE)
+            ENTITY_TYPES.register("falling_meteor", () -> EntityType.Builder.of(FallingMeteor::new, MobCategory.MISC)
                     .sized(2.5f, 2.5f).build("falling_meteor"));
 
 

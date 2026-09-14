@@ -1,5 +1,6 @@
 package dot.lighteater.nyx_rotl.capabilities;
 
+import dot.lighteater.nyx_rotl.Config;
 import dot.lighteater.nyx_rotl.NyxROTL;
 import dot.lighteater.nyx_rotl.lunarevents.LunarEvent;
 import dot.lighteater.nyx_rotl.lunarevents.StarShower;
@@ -9,6 +10,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.saveddata.SavedData;
 
@@ -145,6 +148,9 @@ public class NyxWorld extends SavedData {
 
         boolean isDay = level.isDay();
 
+        updateVisitedDimensions(level);
+        updatePlayerPresence(level);
+
         if (!init) {
             wasDaytime = isDay;
             init = true;
@@ -214,6 +220,69 @@ public class NyxWorld extends SavedData {
                         eventSkyModifier
                 )
         );
+    }
+
+    private void updateVisitedDimensions(ServerLevel level) {
+        if (level.getGameTime() % 200 != 0) {
+            return;
+        }
+
+        for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
+            visitedDimensions.add(
+                    player.level().dimension().location()
+            );
+        }
+    }
+
+    private void updatePlayerPresence(ServerLevel level) {
+        if (!Config.meteors.get()) {
+            return;
+        }
+
+        if (level.getGameTime() % 100 != 0) {
+            return;
+        }
+
+        Set<ChunkPos> remaining = new HashSet<>(
+                playersPresentTicks.keySet()
+        );
+
+        int radius = Config.meteorDisallowRadius.get();
+
+        for (Player player : level.players()) {
+
+            ChunkPos center = player.chunkPosition();
+
+            for (int x = -radius; x <= radius; x++) {
+                for (int z = -radius; z <= radius; z++) {
+
+                    ChunkPos pos = new ChunkPos(
+                            center.x + x,
+                            center.z + z
+                    );
+
+                    playersPresentTicks.merge(
+                            pos,
+                            100,
+                            Integer::sum
+                    );
+
+                    remaining.remove(pos);
+                }
+            }
+        }
+
+        // Chunks no longer near players lose 100 ticks of presence.
+        for (ChunkPos pos : remaining) {
+
+            int time = playersPresentTicks.get(pos) - 100;
+
+            if (time <= 0) {
+                playersPresentTicks.remove(pos);
+            } else {
+                playersPresentTicks.put(pos, time);
+            }
+        }
     }
 }
 

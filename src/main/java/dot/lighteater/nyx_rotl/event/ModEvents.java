@@ -1,12 +1,18 @@
 package dot.lighteater.nyx_rotl.event;
 
+import dot.lighteater.nyx_rotl.Config;
 import dot.lighteater.nyx_rotl.NyxROTL;
 import dot.lighteater.nyx_rotl.blocks.LunarWaterConversion;
 import dot.lighteater.nyx_rotl.blocks.ModBlocks;
 import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
+import dot.lighteater.nyx_rotl.entities.FallingMeteor;
+import dot.lighteater.nyx_rotl.entities.FallingStar;
 import dot.lighteater.nyx_rotl.item.ModItems;
+import dot.lighteater.nyx_rotl.registry.ModEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -14,6 +20,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
@@ -27,6 +34,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Iterator;
+
+import static dot.lighteater.nyx_rotl.Config.*;
 
 // Events handled by the mod.
 
@@ -173,6 +184,11 @@ public class ModEvents {
 
         data.tick(level);
 
+        //spawnFallingStars(level, data);
+
+        spawnMeteors(level, data);
+        processCachedMeteors(level, data);
+
         LunarWaterConversion.tick(level);
 
         for (BlockPos pos : LunarWaterConversion.getIncensedCauldrons(level)) {
@@ -215,6 +231,192 @@ public class ModEvents {
 
                 break;
             }
+        }
+    }
+
+    private static void spawnFallingStars(ServerLevel level, NyxWorld data) {
+
+        // Only attempt once per second.
+        if (level.getGameTime() % 20 != 0) {
+            return;
+        }
+
+        // Only spawn at night.
+        if (level.isDay()) {
+            return;
+        }
+
+        // Falling stars must be enabled.
+        if (!Config.fallingStars.get()) {
+            return;
+        }
+
+        for (Player player : level.players()) {
+
+            // Star Shower makes falling stars 15x more common.
+            float chanceMultiplier =
+                    "star_shower".equals(data.currentEvent) ? 15.0F : 1.0F;
+
+            float random = level.random.nextFloat();
+
+            if (random > Config.fallingStarRarity.get().floatValue() * chanceMultiplier) {
+                continue;
+            }
+
+            // Pick a position roughly 20 blocks around the player.
+            BlockPos startPos = player.blockPosition().offset(
+                    Mth.floor(level.random.nextGaussian() * 20),
+                    0,
+                    Mth.floor(level.random.nextGaussian() * 20)
+            );
+
+            // Put the star blocks above the terrain.
+            startPos = level.getHeightmapPos(
+                    net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING,
+                    startPos
+            ).above(
+                    Mth.nextInt(level.random, 40, 80)
+            );
+
+            FallingStar star = new FallingStar(
+                    ModEntities.FALLING_STAR.get(),
+                    level
+            );
+
+            star.setPos(
+                    startPos.getX(),
+                    startPos.getY(),
+                    startPos.getZ()
+            );
+
+            level.addFreshEntity(star);
+        }
+    }
+
+    private static void spawnMeteors(ServerLevel level, NyxWorld data) {
+        if (level.getGameTime() % 20 != 0) {
+            return;
+        }
+
+        if (!Config.meteors.get()) {
+            return;
+        }
+
+        if (level.players().isEmpty()) {
+            return;
+        }
+
+        Player player = level.players().get(
+                level.random.nextInt(level.players().size())
+        );
+
+        int radius = Config.meteorSpawnRadius.get();
+
+        int offsetX = Mth.floor(
+                level.random.nextDouble() * (radius * 2 + 1) - radius
+        );
+
+        int offsetZ = Mth.floor(
+                level.random.nextDouble() * (radius * 2 + 1) - radius
+        );
+
+        BlockPos spawnPos = player.blockPosition().offset(
+                offsetX,
+                0,
+                offsetZ
+        );
+
+        double chance = Config.getMeteorChance(level, data);
+
+        // Reduce meteor chance based on how long players have been
+        // present around this chunk.
+        ChunkPos meteorChunk = new ChunkPos(spawnPos);
+
+        int presentTicks = data.playersPresentTicks.getOrDefault(
+                meteorChunk,
+                0
+        );
+
+        if (presentTicks > 0) {
+            chance *= Math.pow(
+                    0.5,
+                    (double) presentTicks / Config.meteorDisallowTime.get()
+            );
+        }
+
+        if (chance <= 0 || level.random.nextDouble() > chance) {
+            return;
+        }
+
+        NyxROTL.LOGGER.debug(
+                "[Meteor] Spawn roll succeeded | player={} | pos={} | chance={} | presentTicks={}",
+                player.getName().getString(),
+                spawnPos,
+                chance,
+                presentTicks
+        );
+
+        boolean loaded = level.hasChunkAt(spawnPos);
+
+        NyxROTL.LOGGER.debug(
+                "[Meteor] Chunk check | pos={} | chunk={} | loaded={}",
+                spawnPos,
+                new ChunkPos(spawnPos),
+                loaded
+        );
+
+        // If the target area isn't loaded, remember it and spawn later.
+        if (!loaded) {
+            data.cachedMeteorPositions.add(spawnPos);
+            data.setDirty();
+
+            NyxROTL.LOGGER.debug(
+                    "[Meteor] Cached unloaded meteor position: {}",
+                    spawnPos
+            );
+
+            return;
+        }
+
+        FallingMeteor.spawn(
+                level,
+                spawnPos,
+                ModEntities.FALLING_METEOR.get()
+        );
+    }
+
+    private static void processCachedMeteors(
+            ServerLevel level,
+            NyxWorld data
+    ) {
+        if (data.cachedMeteorPositions.isEmpty()) {
+            return;
+        }
+
+        Iterator<BlockPos> iterator =
+                data.cachedMeteorPositions.iterator();
+
+        while (iterator.hasNext()) {
+
+            BlockPos pos = iterator.next();
+
+            if (!level.hasChunkAt(pos)) {
+                continue;
+            }
+
+            NyxROTL.LOGGER.debug(
+                    "[Meteor] Loading cached meteor at {}",
+                    pos
+            );
+
+            FallingMeteor.spawn(
+                    level,
+                    pos,
+                    ModEntities.FALLING_METEOR.get()
+            );
+
+            iterator.remove();
+            data.setDirty();
         }
     }
 
