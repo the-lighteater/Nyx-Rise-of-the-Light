@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dot.lighteater.nyx_rotl.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "nyx_rotl.refmap.json",
+  "mixins": [],
+  "client": [
+    "LevelRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

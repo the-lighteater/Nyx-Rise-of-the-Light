@@ -6,7 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 
-public class StarShower extends LunarEvent {
+public class StarShower extends CelestialEvent {
 
     public StarShower() {
         super("star_shower");
@@ -23,9 +23,12 @@ public class StarShower extends LunarEvent {
     }
 
     @Override
+    public boolean isSolarEvent() {
+        return false;
+    }
+
+    @Override
     public boolean shouldStart(Level level, boolean lastDaytime) {
-        // Temporary test:
-        // Start when night begins.
         return lastDaytime && !level.isDay();
     }
 
@@ -37,6 +40,21 @@ public class StarShower extends LunarEvent {
     @Override
     public int getSkyColor() {
         return Config.colorStarShower.get();
+    }
+
+    @Override
+    public String getMoonTexture() {
+        return "blood_moon";
+    }
+
+    @Override
+    public float getSkyModifier() {
+        return 0.5f;
+    }
+
+    @Override
+    public float getMoonSizeMultiplier() {
+        return 1.5f;
     }
 
     @Override

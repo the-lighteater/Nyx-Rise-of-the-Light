@@ -46,7 +46,7 @@ public class FallingMeteor extends Entity {
 
     public boolean homing;
     public boolean disableMessage;
-    public float speedModifier = 0.001f;
+    public float speedModifier = 2f;
     public boolean spawnNoBlocks;
 
     public FallingMeteor(

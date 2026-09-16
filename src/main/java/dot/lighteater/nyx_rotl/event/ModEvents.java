@@ -7,15 +7,20 @@ import dot.lighteater.nyx_rotl.blocks.ModBlocks;
 import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
 import dot.lighteater.nyx_rotl.entities.FallingMeteor;
 import dot.lighteater.nyx_rotl.entities.FallingStar;
+import dot.lighteater.nyx_rotl.entities.WolfAISpecialMoon;
 import dot.lighteater.nyx_rotl.item.ModItems;
+import dot.lighteater.nyx_rotl.network.PacketHandler;
+import dot.lighteater.nyx_rotl.network.PacketNyxWorld;
 import dot.lighteater.nyx_rotl.registry.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -58,20 +63,33 @@ public class ModEvents {
         if (nyx == null)
             return;
 
-//        // sync world data to players
-//        if (entity instanceof ServerPlayer player) {
-//            PacketNyxWorld packet = new PacketNyxWorld(nyx);
-//            PacketHandler.sendTo(player, packet);
-//        }
-//
-//        // inject wolf AI
-//        if (entity instanceof Wolf wolf) {
-//
-//            // avoid double-adding task (important!)
-//            if (!hasMoonTask(wolf)) {
-//                wolf.targetSelector.addGoal(3, new WolfAISpecialMoon(wolf));
-//            }
-//        }
+        // Sync world data to players.
+        if (entity instanceof ServerPlayer player) {
+            PacketNyxWorld packet = new PacketNyxWorld(
+                    nyx.currentEvent,
+                    nyx.eventSkyColor,
+                    nyx.eventSkyModifier
+            );
+
+            PacketHandler.sendToPlayer(player, packet);
+        }
+
+        // Inject wolf AI.
+        if (entity instanceof Wolf wolf) {
+
+            // Avoid double-adding task.
+            if (!hasMoonTask(wolf)) {
+                wolf.targetSelector.addGoal(
+                        3,
+                        new WolfAISpecialMoon(wolf)
+                );
+            }
+        }
+    }
+
+    private static boolean hasMoonTask(Wolf wolf) {
+        return wolf.targetSelector.getAvailableGoals().stream()
+                .anyMatch(goal -> goal.getGoal() instanceof WolfAISpecialMoon);
     }
 
     @SubscribeEvent

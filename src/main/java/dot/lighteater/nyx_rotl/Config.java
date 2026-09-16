@@ -52,7 +52,7 @@ public class Config
 //    public static final ForgeConfigSpec.IntValue bloodMoonSpawnRadius;
 //    public static final ForgeConfigSpec.BooleanValue harvestMoonOnFull;
 //    public static final ForgeConfigSpec.BooleanValue bloodMoonOnFull;
-//    public static final ForgeConfigSpec.BooleanValue moonEventTint;
+    public static final ForgeConfigSpec.BooleanValue moonEventTint;
 //    public static final ForgeConfigSpec.IntValue harvestMoonGrowAmount;
 //    public static final ForgeConfigSpec.IntValue harvestMoonGrowInterval;
 //    public static final ForgeConfigSpec.BooleanValue harvestMoonEnabled;
@@ -103,6 +103,9 @@ public class Config
 
     public static final ForgeConfigSpec.IntValue colorStarShower;
 
+    public static final ForgeConfigSpec.IntValue colorRedSupergiant;
+
+
 
 
     static {
@@ -146,7 +149,20 @@ public class Config
 
         BUILDER.pop();
 
+        BUILDER.push("Suns");
+
+        BUILDER.push("Red Supergiant");
+
+        colorRedSupergiant = BUILDER.comment("The hex code of the red supergiant color")
+                        .defineInRange("Red Supergiant Color", 0xa50e05, 0x000000, 0xFFFFFF);
+
+        BUILDER.pop();
+
+        BUILDER.pop();
+
         BUILDER.push("Moons");
+
+        moonEventTint = BUILDER.comment("If moon events should tint the sky").define("Moon Event Tint", true);
 
         BUILDER.push("Full Moon");
 

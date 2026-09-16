@@ -2,7 +2,8 @@ package dot.lighteater.nyx_rotl.capabilities;
 
 import dot.lighteater.nyx_rotl.Config;
 import dot.lighteater.nyx_rotl.NyxROTL;
-import dot.lighteater.nyx_rotl.lunarevents.LunarEvent;
+import dot.lighteater.nyx_rotl.lunarevents.CelestialEvent;
+import dot.lighteater.nyx_rotl.lunarevents.SolarEclipse;
 import dot.lighteater.nyx_rotl.lunarevents.StarShower;
 import dot.lighteater.nyx_rotl.network.PacketHandler;
 import dot.lighteater.nyx_rotl.network.PacketNyxWorld;
@@ -22,7 +23,7 @@ public class NyxWorld extends SavedData {
 
     public static final String NAME = "nyx_world";
 
-    public final List<LunarEvent> events = new ArrayList<>();
+    public final List<CelestialEvent> events = new ArrayList<>();
 
     public String currentEvent = null;
     public boolean wasDaytime = false;
@@ -45,6 +46,7 @@ public class NyxWorld extends SavedData {
 
     public NyxWorld() {
         events.add(new StarShower());
+        events.add(new SolarEclipse());
     }
 
     // -----------------------------------
@@ -161,24 +163,54 @@ public class NyxWorld extends SavedData {
         wasDaytime = isDay;
 
         // Give events their tick
-        for (LunarEvent event : events) {
+        for (CelestialEvent event : events) {
             event.tick(level, lastDay);
         }
 
-        // Start an event
+// ----------------------------------------------------
+// Stop current event FIRST
+// ----------------------------------------------------
+        if (currentEvent != null) {
+
+            CelestialEvent active = events.stream()
+                    .filter(event -> event.name.equals(currentEvent))
+                    .findFirst()
+                    .orElse(null);
+
+            if (active != null && active.shouldStop(level, lastDay)) {
+
+                currentEvent = null;
+                eventSkyColor = 0;
+                eventSkyModifier = 0;
+
+                sendToClients();
+                setDirty();
+            }
+        }
+
+
+// ----------------------------------------------------
+// Start an event
+// ----------------------------------------------------
         if (currentEvent == null) {
 
-            for (LunarEvent event : events) {
+            for (CelestialEvent event : events) {
+
+                // Solar events can only start during the day.
+                if (event.isSolarEvent() && !isDay) {
+                    continue;
+                }
+
+                // Lunar events can only start during the night.
+                if (!event.isSolarEvent() && isDay) {
+                    continue;
+                }
 
                 if (event.shouldStart(level, lastDay)) {
 
                     currentEvent = event.name;
                     eventSkyColor = event.getSkyColor();
-
-                    NyxROTL.LOGGER.info(
-                            "Lunar event started: {}",
-                            currentEvent
-                    );
+                    eventSkyModifier = event.getSkyModifier();
 
                     sendToClients();
                     setDirty();
@@ -191,20 +223,16 @@ public class NyxWorld extends SavedData {
         // Stop current event
         if (currentEvent != null) {
 
-            LunarEvent active = events.stream()
+            CelestialEvent active = events.stream()
                     .filter(event -> event.name.equals(currentEvent))
                     .findFirst()
                     .orElse(null);
 
             if (active != null && active.shouldStop(level, lastDay)) {
 
-                NyxROTL.LOGGER.info(
-                        "Lunar event stopped: {}",
-                        currentEvent
-                );
-
                 currentEvent = null;
                 eventSkyColor = 0;
+                eventSkyModifier = 0;
 
                 sendToClients();
                 setDirty();

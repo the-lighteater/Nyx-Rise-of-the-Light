@@ -44,7 +44,7 @@ public class PacketNyxWorld {
         });
 
         NyxROTL.LOGGER.info(
-                "Client received lunar event: {}",
+                "Client received celestial event: {}",
                 msg.event
         );
 
