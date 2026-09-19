@@ -36,6 +36,9 @@ public class ModBlocks {
     public static final RegistryObject<Block> METEOR_ROCK = registerBlock("meteor_rock",
             MeteorRock::new);
 
+    public static final RegistryObject<Block> GLEANING_METEOR_ROCK = registerBlock("gleaning_meteor_rock",
+            MeteorRock::new);
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);

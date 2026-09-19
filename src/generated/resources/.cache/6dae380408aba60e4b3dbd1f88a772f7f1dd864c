@@ -1,4 +1,10 @@
-// 1.20.1	2026-06-16T11:54:03.1681903	Block States: nyx_rotl
+// 1.20.1	2026-09-19T13:53:21.6341853	Block States: nyx_rotl
+17344baa073f8768d267e4b29dcec2f0472c136d assets/nyx_rotl/blockstates/gleaning_meteor_rock.json
 ee75977aae248dc90bed1d203c34d57f049e4c63 assets/nyx_rotl/blockstates/meteor_glass.json
+211eb9e9f2cf0d6a88c52da1a581a60db6f7c447 assets/nyx_rotl/blockstates/meteor_rock.json
+f95517bd917d3e078980a9a230e2f01cf248d850 assets/nyx_rotl/models/block/gleaning_meteor_rock.json
 2219982059ca6c21e8d78a080110f805f140b03c assets/nyx_rotl/models/block/meteor_glass.json
+ea86f82e9300e3d59c7a599e49113f7759b4976d assets/nyx_rotl/models/block/meteor_rock.json
+22f488a33f136d85a461ed62058b683f35fa7cef assets/nyx_rotl/models/item/gleaning_meteor_rock.json
 454f487c24fa8e3c19d04764286e571079e6b42d assets/nyx_rotl/models/item/meteor_glass.json
+453c069a8131536e64f1a46816e623344d2f5ef2 assets/nyx_rotl/models/item/meteor_rock.json

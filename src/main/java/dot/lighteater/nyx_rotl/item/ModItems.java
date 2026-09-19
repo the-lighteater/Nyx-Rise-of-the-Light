@@ -2,10 +2,7 @@ package dot.lighteater.nyx_rotl.item;
 
 import dot.lighteater.nyx_rotl.NyxROTL;
 import dot.lighteater.nyx_rotl.fluid.ModFluids;
-import dot.lighteater.nyx_rotl.item.custom.FallenStar;
-import dot.lighteater.nyx_rotl.item.custom.LunarWaterBottle;
-import dot.lighteater.nyx_rotl.item.custom.LunarWaterBucket;
-import dot.lighteater.nyx_rotl.item.custom.MeteorAxe;
+import dot.lighteater.nyx_rotl.item.custom.*;
 import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,6 +33,15 @@ public class ModItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> UNREFINED_CRYSTAL = ITEMS.register("unrefined_crystal",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> METEOR_FINDER = ITEMS.register("meteor_finder",
+            () -> new MeteorFinder(new Item.Properties()));
+
+    public static final RegistryObject<Item> METEOR_HAMMER = ITEMS.register("meteor_hammer",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> SCYTHE = ITEMS.register("scythe",
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> METEOR_BOW = ITEMS.register("meteor_bow",

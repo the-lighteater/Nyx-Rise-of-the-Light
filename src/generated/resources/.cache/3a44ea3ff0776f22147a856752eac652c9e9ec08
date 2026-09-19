@@ -1,4 +1,4 @@
-// 1.20.1	2026-09-11T23:07:29.5191951	Item Models: nyx_rotl
+// 1.20.1	2026-09-19T14:45:35.2347424	Item Models: nyx_rotl
 f48c0f2ce881b1bac008bb9c131ceee224a615fd assets/nyx_rotl/models/item/fallen_star.json
 6e9af4945a4be67a11be33fd8a9928017dd3a9a7 assets/nyx_rotl/models/item/lunar_water_bottle.json
 18136dc337d30534bafd2c2de2a95524c7c47d15 assets/nyx_rotl/models/item/lunar_water_bucket.json
@@ -57,5 +57,4 @@ ddbe35e3d08d9446afe198a7990e7d2df8312506 assets/nyx_rotl/models/item/meteor_legg
 e94e04581d819ee0d6080c3f4a2fc50d37447193 assets/nyx_rotl/models/item/meteor_pickaxe.json
 4da041970d6acccdddd58084b28bcbeca814bc1e assets/nyx_rotl/models/item/meteor_shard.json
 d363e9d75b378f8ddbe219023ddebf74dd476b10 assets/nyx_rotl/models/item/meteor_shovel.json
-b67e4e2464be955dd14d5eb8dcf6848d9ca781b0 assets/nyx_rotl/models/item/meteor_sword.json
 8c6f32d3e2d82366481a0deaa634931bf9a87dd6 assets/nyx_rotl/models/item/unrefined_crystal.json

@@ -16,6 +16,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         blockWithItem(ModBlocks.METEOR_GLASS);
+        blockWithItem(ModBlocks.METEOR_ROCK);
+        blockWithItem(ModBlocks.GLEANING_METEOR_ROCK);
     }
 
     private void blockWithItem(RegistryObject<Block> blockRegistryObject) {

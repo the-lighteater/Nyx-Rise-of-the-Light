@@ -3,6 +3,7 @@ package dot.lighteater.nyx_rotl.registry;
 import dot.lighteater.nyx_rotl.NyxROTL;
 import dot.lighteater.nyx_rotl.entities.FallingMeteor;
 import dot.lighteater.nyx_rotl.entities.FallingStar;
+import dot.lighteater.nyx_rotl.entities.MeteorKat;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -22,6 +23,16 @@ public class ModEntities {
             ENTITY_TYPES.register("falling_meteor", () -> EntityType.Builder.of(FallingMeteor::new, MobCategory.MISC)
                     .sized(2.5f, 2.5f).build("falling_meteor"));
 
+    public static final RegistryObject<EntityType<MeteorKat>> METEOR_KAT =
+            ENTITY_TYPES.register(
+                    "meteor_kat",
+                    () -> EntityType.Builder.of(
+                                    MeteorKat::new,
+                                    MobCategory.CREATURE
+                            )
+                            .sized(0.6f, 0.7f)
+                            .build("meteor_kat")
+            );
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

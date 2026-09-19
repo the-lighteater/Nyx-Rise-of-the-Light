@@ -39,6 +39,8 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
         this.dropOther(ModBlocks.METEOR_ROCK.get(), ModItems.METEOR_SHARD.get());
 
+        this.dropOther(ModBlocks.GLEANING_METEOR_ROCK.get(), ModItems.UNREFINED_CRYSTAL.get());
+
     }
 
     @Override

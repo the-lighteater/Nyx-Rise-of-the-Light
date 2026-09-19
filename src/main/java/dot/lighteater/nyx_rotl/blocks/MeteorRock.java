@@ -1,6 +1,9 @@
 package dot.lighteater.nyx_rotl.blocks;
 
+import dot.lighteater.nyx_rotl.NyxROTL;
+import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,20 +27,29 @@ public class MeteorRock extends Block {
         );
     }
 
-    /*
-     * TODO:
-     * When meteor landing sites are moved to SavedData,
-     * remove this block's position from the saved landing-site
-     * collection when the block is broken.
-     *
-     * Old 1.12.2 behavior:
-     *
-     * NyxWorld data = NyxWorld.get(world);
-     * if (data != null) {
-     *     data.meteorLandingSites.remove(pos);
-     *     data.sendToClients();
-     * }
-     */
+    @Override
+    public void onRemove(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            BlockState newState,
+            boolean isMoving
+    ) {
+        // Only remove the landing site if this Meteor Rock
+        // is actually being replaced by a different block.
+        if (!state.is(newState.getBlock())) {
+            if (level instanceof ServerLevel serverLevel) {
+                NyxWorld data = NyxWorld.get(serverLevel);
+
+                data.meteorLandingSites.remove(pos);
+                data.sendToClients();
+            }
+        }
+
+        super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+
 
     @Override
     public void stepOn(

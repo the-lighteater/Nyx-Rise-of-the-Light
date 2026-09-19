@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import dot.lighteater.nyx_rotl.blocks.ModBlockEntities;
 import dot.lighteater.nyx_rotl.blocks.ModBlocks;
 import dot.lighteater.nyx_rotl.entities.EmptyRenderer;
+import dot.lighteater.nyx_rotl.entities.MeteorKatRenderer;
 import dot.lighteater.nyx_rotl.entities.MeteorRenderer;
 import dot.lighteater.nyx_rotl.fluid.ModFluidTypes;
 import dot.lighteater.nyx_rotl.fluid.ModFluids;
@@ -83,6 +84,7 @@ public class NyxROTL
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.FALLING_STAR.get(), EmptyRenderer::new);
             EntityRenderers.register(ModEntities.FALLING_METEOR.get(), MeteorRenderer::new);
+            EntityRenderers.register(ModEntities.METEOR_KAT.get(), MeteorKatRenderer::new);
             ItemBlockRenderTypes.setRenderLayer(
                     ModBlocks.CRYSTAL.get(),
                     RenderType.translucent()

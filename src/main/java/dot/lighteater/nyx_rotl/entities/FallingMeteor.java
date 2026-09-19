@@ -1,6 +1,12 @@
 package dot.lighteater.nyx_rotl.entities;
 
 import com.mojang.logging.LogUtils;
+import dot.lighteater.nyx_rotl.Config;
+import dot.lighteater.nyx_rotl.NyxROTL;
+import dot.lighteater.nyx_rotl.blocks.ModBlocks;
+import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
+import dot.lighteater.nyx_rotl.lunarevents.HarvestMoon;
+import dot.lighteater.nyx_rotl.registry.ModEntities;
 import dot.lighteater.nyx_rotl.registry.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -277,7 +283,7 @@ public class FallingMeteor extends Entity {
                 getY(),
                 getZ(),
                 entityData.get(SIZE) * 4,
-                false,
+                true,
                 Level.ExplosionInteraction.BLOCK
         );
 
@@ -286,6 +292,27 @@ public class FallingMeteor extends Entity {
                     level,
                     explosion.getToBlow()
             );
+        }
+
+        // Spawn MeteorKats at the meteor impact site.
+        for (int katCount = 0;
+             katCount < Config.meteorKatCount.get();
+             katCount++) {
+
+            if (level.random.nextDouble() < Config.meteorKatChance.get()) {
+
+                MeteorKat kat = ModEntities.METEOR_KAT.get().create(level);
+
+                if (kat != null) {
+                    kat.setPos(
+                            getX(),
+                            getY() + 1,
+                            getZ()
+                    );
+
+                    level.addFreshEntity(kat);
+                }
+            }
         }
 
         LOGGER.debug("Processing explosion...");
@@ -308,6 +335,8 @@ public class FallingMeteor extends Entity {
             List<BlockPos> affected
     ) {
 
+        NyxWorld data = NyxWorld.get(level);
+
         for (BlockPos pos : affected) {
 
             BlockState state = level.getBlockState(pos);
@@ -328,11 +357,21 @@ public class FallingMeteor extends Entity {
                         3
                 );
             } else {
-                level.setBlock(
-                        pos,
-                        Blocks.MOSSY_COBBLESTONE.defaultBlockState(),
-                        3
-                );
+                if (data.getCurrentEvent() instanceof HarvestMoon && level.random.nextInt(10) == 0) {
+                    level.setBlock(
+                            pos,
+                            ModBlocks.GLEANING_METEOR_ROCK.get().defaultBlockState(),
+                            3
+                    );
+                } else {
+                    level.setBlock(
+                            pos,
+                            ModBlocks.METEOR_ROCK.get().defaultBlockState(),
+                            3
+                    );
+                }
+                data.meteorLandingSites.add(pos);
+                data.sendToClients();
             }
         }
     }

@@ -68,7 +68,9 @@ public class ModEvents {
             PacketNyxWorld packet = new PacketNyxWorld(
                     nyx.currentEvent,
                     nyx.eventSkyColor,
-                    nyx.eventSkyModifier
+                    nyx.eventSkyModifier,
+                    nyx.meteorLandingSites,
+                    nyx.cachedMeteorPositions
             );
 
             PacketHandler.sendToPlayer(player, packet);

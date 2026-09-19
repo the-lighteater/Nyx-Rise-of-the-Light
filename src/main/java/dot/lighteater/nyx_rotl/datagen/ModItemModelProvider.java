@@ -58,7 +58,6 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         bowItem(ModItems.METEOR_BOW);
 
-        handheldItem(ModItems.METEOR_SWORD);
         handheldItem(ModItems.METEOR_AXE);
         handheldItem(ModItems.METEOR_PICKAXE);
         handheldItem(ModItems.METEOR_HOE);

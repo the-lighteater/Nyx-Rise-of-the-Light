@@ -7,6 +7,7 @@ import dot.lighteater.nyx_rotl.lunarevents.SolarEclipse;
 import dot.lighteater.nyx_rotl.lunarevents.StarShower;
 import dot.lighteater.nyx_rotl.network.PacketHandler;
 import dot.lighteater.nyx_rotl.network.PacketNyxWorld;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceLocation;
@@ -36,6 +37,12 @@ public class NyxWorld extends SavedData {
     public static String clientCurrentEvent = null;
     public static int clientEventSkyColor = 0;
     public static float clientEventSkyModifier = 0f;
+
+    public static final Set<BlockPos> clientMeteorLandingSites =
+            new HashSet<>();
+
+    public static final Set<BlockPos> clientCachedMeteorPositions =
+            new HashSet<>();
 
     public final Set<BlockPos> cachedMeteorPositions = new HashSet<>();
     public final Set<BlockPos> meteorLandingSites = new HashSet<>();
@@ -240,12 +247,21 @@ public class NyxWorld extends SavedData {
         }
     }
 
-    private void sendToClients() {
+    public CelestialEvent getCurrentEvent() {
+        return events.stream()
+                .filter(event -> event.name.equals(currentEvent))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public void sendToClients() {
         PacketHandler.sendToAll(
                 new PacketNyxWorld(
                         currentEvent,
                         eventSkyColor,
-                        eventSkyModifier
+                        eventSkyModifier,
+                        meteorLandingSites,
+                        cachedMeteorPositions
                 )
         );
     }

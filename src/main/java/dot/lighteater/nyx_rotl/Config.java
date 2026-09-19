@@ -105,6 +105,10 @@ public class Config
 
     public static final ForgeConfigSpec.IntValue colorRedSupergiant;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> meteorKatCount;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> meteorKatChance;
+
 
 
 
@@ -309,6 +313,14 @@ public class Config
         BUILDER.pop();
 
         BUILDER.pop();
+
+        BUILDER.push("Meteor Kats");
+
+        meteorKatCount = BUILDER.comment("The number of times a Meteor Kat gets a chance to spawn")
+                .define("Max Kat Attempts", 3);
+
+        meteorKatChance = BUILDER.comment("The number of times a Meteor Kat gets a chance to spawn")
+                .define("Max Kat Chances", 0.25);
 
         SPEC = BUILDER.build();
     }
