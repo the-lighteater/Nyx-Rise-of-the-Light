@@ -1,4 +1,14 @@
-// 1.20.1	2026-09-19T14:45:35.2347424	Item Models: nyx_rotl
+// 1.20.1	2026-09-22T19:19:38.6185071	Item Models: nyx_rotl
+4b7f180d4d9f735b0e2dee4b7421e08c7a29e8a8 assets/nyx_rotl/models/item/chiseled_star_fence.json
+cc72eb64c561418aff55b05425a06291368c52bd assets/nyx_rotl/models/item/chiseled_star_fence_gate.json
+36445be320368f5f231dd9d809ca445cfef6f4fc assets/nyx_rotl/models/item/chiseled_star_slab.json
+10184b9e8102ae6071e735a7335daa624a7d0ea1 assets/nyx_rotl/models/item/chiseled_star_stairs.json
+26d3e5fb69b595a7add9f1f1e2b556b7f25e2581 assets/nyx_rotl/models/item/chiseled_star_wall.json
+1faec641edcbf037d2cc7c51cb296186a75bd46c assets/nyx_rotl/models/item/cracked_star_fence.json
+8d7e184074f3bb0718259fdbd49bd61e2c8e5a55 assets/nyx_rotl/models/item/cracked_star_fence_gate.json
+3d85194a95581a63ad6185fb484390d63bc7e34d assets/nyx_rotl/models/item/cracked_star_slab.json
+c4c9c6b4b9c2715b2b710e0e5c654836a0ef37cc assets/nyx_rotl/models/item/cracked_star_stairs.json
+68031f55ab948e176a9b60015cd791799ee39f69 assets/nyx_rotl/models/item/cracked_star_wall.json
 f48c0f2ce881b1bac008bb9c131ceee224a615fd assets/nyx_rotl/models/item/fallen_star.json
 6e9af4945a4be67a11be33fd8a9928017dd3a9a7 assets/nyx_rotl/models/item/lunar_water_bottle.json
 18136dc337d30534bafd2c2de2a95524c7c47d15 assets/nyx_rotl/models/item/lunar_water_bucket.json
@@ -14,7 +24,7 @@ d4a2ee931551afc18819274b9d91f3ededc2ec6d assets/nyx_rotl/models/item/meteor_boot
 5015900eaff4bb73823ee34949fd6d4846ca7bfa assets/nyx_rotl/models/item/meteor_boots_netherite_trim.json
 a73698889adf0e4e186f9bd1ad626733ad3b69bf assets/nyx_rotl/models/item/meteor_boots_quartz_trim.json
 03d602f8e4ae3349655ae403fe3f9bba929f2ce8 assets/nyx_rotl/models/item/meteor_boots_redstone_trim.json
-f71d5351fc3dbdc96416f574761e00b73d401317 assets/nyx_rotl/models/item/meteor_bow.json
+62a86f78621fc461e6d50462b56efab69685f090 assets/nyx_rotl/models/item/meteor_bow.json
 fc7233dcb47d2e7cef3414ace8e16343c27d2a7d assets/nyx_rotl/models/item/meteor_bow_pulling_0.json
 a3c88921f23b2e95abfd6685497ef06d962c4e65 assets/nyx_rotl/models/item/meteor_bow_pulling_1.json
 c0a0721b773f1d290e5b86803aa4c3ca64cd37a2 assets/nyx_rotl/models/item/meteor_bow_pulling_2.json
@@ -57,4 +67,10 @@ ddbe35e3d08d9446afe198a7990e7d2df8312506 assets/nyx_rotl/models/item/meteor_legg
 e94e04581d819ee0d6080c3f4a2fc50d37447193 assets/nyx_rotl/models/item/meteor_pickaxe.json
 4da041970d6acccdddd58084b28bcbeca814bc1e assets/nyx_rotl/models/item/meteor_shard.json
 d363e9d75b378f8ddbe219023ddebf74dd476b10 assets/nyx_rotl/models/item/meteor_shovel.json
+18562fb28cc6fedf169e84f4e12c184d1ac246dd assets/nyx_rotl/models/item/minecraft.json
+62e784818fd29a1284021afdd8a023528e2da28e assets/nyx_rotl/models/item/star_fence.json
+40151c1a7a4835403e215918669808e24eaf02c1 assets/nyx_rotl/models/item/star_fence_gate.json
+648192516f36696a68bf25b59cdeb3514bf9ed16 assets/nyx_rotl/models/item/star_slab.json
+b5648715a13eb78a5de7aad897a082dc6fa77619 assets/nyx_rotl/models/item/star_stairs.json
+2e163e77b4d2a84a53ccb55cd56ee7a0ad24e74b assets/nyx_rotl/models/item/star_wall.json
 8c6f32d3e2d82366481a0deaa634931bf9a87dd6 assets/nyx_rotl/models/item/unrefined_crystal.json

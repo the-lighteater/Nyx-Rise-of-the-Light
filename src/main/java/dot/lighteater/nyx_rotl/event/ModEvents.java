@@ -204,9 +204,9 @@ public class ModEvents {
 
         data.tick(level);
 
-        //spawnFallingStars(level, data);
-
+        spawnFallingStars(level, data);
         spawnMeteors(level, data);
+
         processCachedMeteors(level, data);
 
         LunarWaterConversion.tick(level);
@@ -368,32 +368,12 @@ public class ModEvents {
             return;
         }
 
-        NyxROTL.LOGGER.debug(
-                "[Meteor] Spawn roll succeeded | player={} | pos={} | chance={} | presentTicks={}",
-                player.getName().getString(),
-                spawnPos,
-                chance,
-                presentTicks
-        );
-
         boolean loaded = level.hasChunkAt(spawnPos);
-
-        NyxROTL.LOGGER.debug(
-                "[Meteor] Chunk check | pos={} | chunk={} | loaded={}",
-                spawnPos,
-                new ChunkPos(spawnPos),
-                loaded
-        );
 
         // If the target area isn't loaded, remember it and spawn later.
         if (!loaded) {
             data.cachedMeteorPositions.add(spawnPos);
             data.setDirty();
-
-            NyxROTL.LOGGER.debug(
-                    "[Meteor] Cached unloaded meteor position: {}",
-                    spawnPos
-            );
 
             return;
         }

@@ -2,9 +2,7 @@ package dot.lighteater.nyx_rotl.capabilities;
 
 import dot.lighteater.nyx_rotl.Config;
 import dot.lighteater.nyx_rotl.NyxROTL;
-import dot.lighteater.nyx_rotl.lunarevents.CelestialEvent;
-import dot.lighteater.nyx_rotl.lunarevents.SolarEclipse;
-import dot.lighteater.nyx_rotl.lunarevents.StarShower;
+import dot.lighteater.nyx_rotl.lunarevents.*;
 import dot.lighteater.nyx_rotl.network.PacketHandler;
 import dot.lighteater.nyx_rotl.network.PacketNyxWorld;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -22,11 +20,14 @@ import java.util.*;
 
 public class NyxWorld extends SavedData {
 
+    public static int moonPhase;
+
     public static final String NAME = "nyx_world";
 
     public final List<CelestialEvent> events = new ArrayList<>();
 
     public String currentEvent = null;
+    public String forcedEvent = null;
     public boolean wasDaytime = false;
 
     public boolean init = false;
@@ -52,8 +53,14 @@ public class NyxWorld extends SavedData {
     public final Set<ResourceLocation> visitedDimensions = new HashSet<>();
 
     public NyxWorld() {
+        // Lunar Events
         events.add(new StarShower());
-        events.add(new SolarEclipse());
+        events.add(new HarvestMoon());
+        events.add(new FullMoon());
+        events.add(new BloodMoon());
+
+        // Solar Events
+        //events.add(new SolarEclipse());
     }
 
     // -----------------------------------
@@ -77,9 +84,21 @@ public class NyxWorld extends SavedData {
             tag.putString("event", currentEvent);
         }
 
+        if (forcedEvent != null) {
+            tag.putString("forced_event", forcedEvent);
+        }
+
         tag.putBoolean("was_daytime", wasDaytime);
         tag.putFloat("sky_mod", eventSkyModifier);
         tag.putInt("sky_color", eventSkyColor);
+
+        CompoundTag eventConfigs = new CompoundTag();
+
+        for (CelestialEvent event : events) {
+            event.saveConfig(eventConfigs);
+        }
+
+        tag.put("event_configs", eventConfigs);
 
         ListTag landings = new ListTag();
         for (BlockPos pos : meteorLandingSites) {
@@ -120,10 +139,28 @@ public class NyxWorld extends SavedData {
 
         NyxWorld data = new NyxWorld();
 
-        data.currentEvent = tag.contains("event") ? tag.getString("event") : null;
+        data.currentEvent =
+                tag.contains("event")
+                        ? tag.getString("event")
+                        : null;
+
+        data.forcedEvent =
+                tag.contains("forced_event")
+                        ? tag.getString("forced_event")
+                        : null;
+
+
         data.wasDaytime = tag.getBoolean("was_daytime");
         data.eventSkyModifier = tag.getFloat("sky_mod");
         data.eventSkyColor = tag.getInt("sky_color");
+
+        if (tag.contains("event_configs")) {
+            CompoundTag eventConfigs = tag.getCompound("event_configs");
+
+            for (CelestialEvent event : data.events) {
+                event.loadConfig(eventConfigs);
+            }
+        }
 
         for (Tag t : tag.getList("meteor_landings", Tag.TAG_LONG)) {
             data.meteorLandingSites.add(BlockPos.of(((LongTag) t).getAsLong()));
@@ -155,6 +192,8 @@ public class NyxWorld extends SavedData {
     // -----------------------------------
     public void tick(ServerLevel level) {
 
+        moonPhase = level.getMoonPhase();
+
         boolean isDay = level.isDay();
 
         updateVisitedDimensions(level);
@@ -169,22 +208,44 @@ public class NyxWorld extends SavedData {
         boolean lastDay = wasDaytime;
         wasDaytime = isDay;
 
-        // Give events their tick
+// ----------------------------------------------------
+// Update event schedulers
+// ----------------------------------------------------
+
         for (CelestialEvent event : events) {
-            event.tick(level, lastDay);
+
+            boolean active =
+                    event.name.equals(currentEvent);
+
+            event.updateConfig(
+                    lastDay,
+                    isDay,
+                    active
+            );
+
+            event.tick(
+                    level,
+                    lastDay
+            );
         }
+
 
 // ----------------------------------------------------
 // Stop current event FIRST
 // ----------------------------------------------------
+
         if (currentEvent != null) {
 
             CelestialEvent active = events.stream()
-                    .filter(event -> event.name.equals(currentEvent))
+                    .filter(event ->
+                            event.name.equals(currentEvent))
                     .findFirst()
                     .orElse(null);
 
-            if (active != null && active.shouldStop(level, lastDay)) {
+            if (active != null
+                    && active.shouldStop(level, lastDay)) {
+
+                active.onStop(level);
 
                 currentEvent = null;
                 eventSkyColor = 0;
@@ -199,30 +260,84 @@ public class NyxWorld extends SavedData {
 // ----------------------------------------------------
 // Start an event
 // ----------------------------------------------------
+
         if (currentEvent == null) {
 
-            for (CelestialEvent event : events) {
+            // ---------------------------------------------
+            // Forced event has priority
+            // ---------------------------------------------
 
-                // Solar events can only start during the day.
-                if (event.isSolarEvent() && !isDay) {
-                    continue;
-                }
+            if (forcedEvent != null) {
 
-                // Lunar events can only start during the night.
-                if (!event.isSolarEvent() && isDay) {
-                    continue;
-                }
+                CelestialEvent event = events.stream()
+                        .filter(e -> e.name.equalsIgnoreCase(forcedEvent))
+                        .findFirst()
+                        .orElse(null);
 
-                if (event.shouldStart(level, lastDay)) {
+                if (event != null) {
 
-                    currentEvent = event.name;
-                    eventSkyColor = event.getSkyColor();
-                    eventSkyModifier = event.getSkyModifier();
+                    if ((event.isSolarEvent() && isDay)
+                            || (!event.isSolarEvent() && !isDay)) {
 
-                    sendToClients();
+                        if (event.shouldStart(level, lastDay, true)) {
+
+                            event.onStart(level);
+
+                            currentEvent = event.name;
+
+                            // The forced event has now been consumed.
+                            forcedEvent = null;
+
+                            eventSkyColor =
+                                    event.getSkyColor();
+
+                            eventSkyModifier =
+                                    event.getSkyModifier();
+
+                            sendToClients();
+                            setDirty();
+                        }
+                    }
+                } else {
+                    // Event no longer exists.
+                    forcedEvent = null;
                     setDirty();
+                }
+            }
 
-                    break;
+            // ---------------------------------------------
+            // Normal random event selection
+            // ---------------------------------------------
+
+            if (currentEvent == null && forcedEvent == null) {
+
+                for (CelestialEvent event : events) {
+
+                    if (event.isSolarEvent() && !isDay) {
+                        continue;
+                    }
+
+                    if (!event.isSolarEvent() && isDay) {
+                        continue;
+                    }
+
+                    if (event.shouldStart(level, lastDay, false)) {
+
+                        event.onStart(level);
+
+                        currentEvent = event.name;
+
+                        eventSkyColor =
+                                event.getSkyColor();
+
+                        eventSkyModifier =
+                                event.getSkyModifier();
+
+                        sendToClients();
+                        setDirty();
+
+                        break;
+                    }
                 }
             }
         }
@@ -329,34 +444,3 @@ public class NyxWorld extends SavedData {
         }
     }
 }
-
-
-
-//    public NyxWorld() {
-////        events.add(new HarvestMoon());
-//        events.add(new StarShower());
-////        events.add(new BloodMoon());
-////        events.add(new FullMoon());
-//    }
-
-
-
-        // ☄️ meteor chunk tracking
-//        if (Config.meteors.get() && time % 100 == 0) {
-//
-//            data.playersPresentTicks.clear();
-//
-//            for (Player player : level.players()) {
-//
-//                ChunkPos center = player.chunkPosition();
-//
-//                for (int x = -Config.meteorDisallowRadius.get(); x <= Config.meteorDisallowRadius.get(); x++) {
-//                    for (int z = -Config.meteorDisallowRadius.get(); z <= Config.meteorDisallowRadius.get(); z++) {
-//
-//                        ChunkPos pos = new ChunkPos(center.x + x, center.z + z);
-//                        data.playersPresentTicks.merge(pos, 100, Integer::sum);
-//                    }
-//                }
-//            }
-//        }
-

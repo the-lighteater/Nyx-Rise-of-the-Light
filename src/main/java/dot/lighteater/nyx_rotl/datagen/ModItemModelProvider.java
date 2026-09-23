@@ -1,6 +1,7 @@
 package dot.lighteater.nyx_rotl.datagen;
 
 import dot.lighteater.nyx_rotl.NyxROTL;
+import dot.lighteater.nyx_rotl.blocks.ModBlocks;
 import dot.lighteater.nyx_rotl.item.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -10,11 +11,13 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.armortrim.TrimMaterial;
 import net.minecraft.world.item.armortrim.TrimMaterials;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.LinkedHashMap;
@@ -67,12 +70,58 @@ public class ModItemModelProvider extends ItemModelProvider {
         trimmedArmorItem(ModItems.METEOR_CHESTPLATE);
         trimmedArmorItem(ModItems.METEOR_LEGGINGS);
         trimmedArmorItem(ModItems.METEOR_BOOTS);
+
+        fenceItem(ModBlocks.STAR_FENCE, ModBlocks.STAR_BLOCK);
+        wallItem(ModBlocks.STAR_WALL, ModBlocks.STAR_BLOCK);
+
+        evenSimplerBlockItem(ModBlocks.STAR_STAIRS);
+        evenSimplerBlockItem(ModBlocks.STAR_SLAB);
+        evenSimplerBlockItem(ModBlocks.STAR_FENCE_GATE);
+
+        fenceItem(ModBlocks.CHISELED_STAR_FENCE, ModBlocks.CHISELED_STAR_BLOCK);
+        wallItem(ModBlocks.CHISELED_STAR_WALL, ModBlocks.CHISELED_STAR_BLOCK);
+
+        evenSimplerBlockItem(ModBlocks.CHISELED_STAR_STAIRS);
+        evenSimplerBlockItem(ModBlocks.CHISELED_STAR_SLAB);
+        evenSimplerBlockItem(ModBlocks.CHISELED_STAR_FENCE_GATE);
+
+        fenceItem(ModBlocks.CRACKED_STAR_FENCE, ModBlocks.CRACKED_STAR_BLOCK);
+        wallItem(ModBlocks.CRACKED_STAR_WALL, ModBlocks.CRACKED_STAR_BLOCK);
+
+        evenSimplerBlockItem(ModBlocks.CRACKED_STAR_STAIRS);
+        evenSimplerBlockItem(ModBlocks.CRACKED_STAR_SLAB);
+        evenSimplerBlockItem(ModBlocks.CRACKED_STAR_FENCE_GATE);
     }
 
     private ItemModelBuilder simpleItem(RegistryObject<Item> item) {
         return withExistingParent(item.getId().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(NyxROTL.MODID, "item/" + item.getId().getPath()));
+    }
+
+    public void evenSimplerBlockItem(RegistryObject<Block> block) {
+        this.withExistingParent(NyxROTL.MODID + ":" + ForgeRegistries.BLOCKS.getKey(block.get()).getPath(),
+                modLoc("block/" + ForgeRegistries.BLOCKS.getKey(block.get()).getPath()));
+    }
+
+    public void trapdoorItem(RegistryObject<Block> block) {
+        this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(),
+                modLoc("block/" + ForgeRegistries.BLOCKS.getKey(block.get()).getPath() + "_bottom"));
+    }
+
+    public void fenceItem(RegistryObject<Block> block, RegistryObject<Block> baseBlock) {
+        this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/fence_inventory"))
+                .texture("texture",  new ResourceLocation(NyxROTL.MODID, "block/" + ForgeRegistries.BLOCKS.getKey(baseBlock.get()).getPath()));
+    }
+
+    public void buttonItem(RegistryObject<Block> block, RegistryObject<Block> baseBlock) {
+        this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/button_inventory"))
+                .texture("texture",  new ResourceLocation(NyxROTL.MODID, "block/" + ForgeRegistries.BLOCKS.getKey(baseBlock.get()).getPath()));
+    }
+
+    public void wallItem(RegistryObject<Block> block, RegistryObject<Block> baseBlock) {
+        this.withExistingParent(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), mcLoc("block/wall_inventory"))
+                .texture("wall",  new ResourceLocation(NyxROTL.MODID, "block/" + ForgeRegistries.BLOCKS.getKey(baseBlock.get()).getPath()));
     }
 
     private ItemModelBuilder handheldItem(RegistryObject<Item> item) {
@@ -134,7 +183,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         // Base bow model
         ModelFile baseModel = withExistingParent(
-                name,
+                "minecraft",
                 mcLoc("item/bow")
         ).texture(
                 "layer0",
@@ -173,17 +222,16 @@ public class ModItemModelProvider extends ItemModelProvider {
                 .parent(baseModel)
                 .override()
                 .predicate(mcLoc("pulling"), 1.0F)
-                .predicate(mcLoc("pull"), 0.65F)
                 .model(pulling0)
                 .end()
                 .override()
                 .predicate(mcLoc("pulling"), 1.0F)
-                .predicate(mcLoc("pull"), 0.9F)
+                .predicate(mcLoc("pull"), 0.65F)
                 .model(pulling1)
                 .end()
                 .override()
                 .predicate(mcLoc("pulling"), 1.0F)
-                .predicate(mcLoc("pull"), 1.0F)
+                .predicate(mcLoc("pull"), 0.9F)
                 .model(pulling2)
                 .end();
     }

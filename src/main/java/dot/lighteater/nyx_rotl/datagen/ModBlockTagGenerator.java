@@ -31,5 +31,20 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(Tags.Blocks.NEEDS_NETHERITE_TOOL);
 
         this.tag(ModTags.Blocks.NEEDS_METEOR_TOOL);
+
+        this.tag(BlockTags.FENCES)
+                .add(ModBlocks.STAR_FENCE.get())
+                .add(ModBlocks.CHISELED_STAR_FENCE.get())
+                .add(ModBlocks.CRACKED_STAR_FENCE.get());
+
+        this.tag(BlockTags.FENCE_GATES)
+                .add(ModBlocks.STAR_FENCE_GATE.get())
+                .add(ModBlocks.CHISELED_STAR_FENCE_GATE.get())
+                .add(ModBlocks.CRACKED_STAR_FENCE_GATE.get());
+
+        this.tag(BlockTags.WALLS)
+                .add(ModBlocks.STAR_WALL.get())
+                .add(ModBlocks.CHISELED_STAR_WALL.get())
+                .add(ModBlocks.CRACKED_STAR_WALL.get());
     }
 }

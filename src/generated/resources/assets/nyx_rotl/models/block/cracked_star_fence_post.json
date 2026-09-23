@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_post",
+  "textures": {
+    "texture": "nyx_rotl:block/cracked_star_block"
+  }
+}

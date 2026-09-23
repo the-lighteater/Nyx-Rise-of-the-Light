@@ -196,8 +196,8 @@ dependencies {
     compileOnly(fg.deobf("curse.maven:create-328085:6641603"))
     compileOnly(fg.deobf("curse.maven:create-688231:6963175"))
 //    compileOnly(fg.deobf("curse.maven:myf-409371:6816822"))
-//    compileOnly(fg.deobf("curse.maven:cataclysm-551586:6906993"))
-//    compileOnly(fg.deobf("curse.maven:cataclysm-1001614:5922047"))
+    compileOnly(fg.deobf("curse.maven:cataclysm-551586:6906993"))
+    compileOnly(fg.deobf("curse.maven:cataclysm-1001614:5922047"))
 //    compileOnly(fg.deobf("curse.maven:iceandfire-264231:5633453"))
 //
 //    compileOnly(fg.deobf("curse.maven:soulfire-662413:6248077"))

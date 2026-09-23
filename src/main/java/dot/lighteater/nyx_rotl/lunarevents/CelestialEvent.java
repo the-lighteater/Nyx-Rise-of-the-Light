@@ -1,5 +1,6 @@
 package dot.lighteater.nyx_rotl.lunarevents;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 
@@ -7,15 +8,36 @@ public abstract class CelestialEvent {
 
     public final String name;
 
+    protected final CelestialEventConfig config;
+
+    /**
+     * Creates an event that uses a scheduler configuration.
+     */
+    public CelestialEvent(
+            String name,
+            CelestialEventConfig config
+    ) {
+        this.name = name;
+        this.config = config;
+    }
+
+    /**
+     * Creates an event without scheduler configuration.
+     *
+     * Use this for events that have their own start/stop conditions,
+     * such as Full Moon.
+     */
     public CelestialEvent(String name) {
         this.name = name;
+        this.config = null;
     }
 
     public abstract Component getStartMessage();
 
     public abstract boolean shouldStart(
             Level level,
-            boolean lastDaytime
+            boolean lastDaytime,
+            boolean forced
     );
 
     public abstract boolean shouldStop(
@@ -33,37 +55,18 @@ public abstract class CelestialEvent {
         return false;
     }
 
-    /**
-     * Color used for event sky/fog tinting.
-     */
     public int getSkyColor() {
         return 0;
     }
 
-    /**
-     * Strength of the sky/fog tint.
-     *
-     * 0.0 = no tint
-     * 1.0 = completely replace the original color
-     */
     public float getSkyModifier() {
-        return 0f;
+        return 0.25f;
     }
 
-    /**
-     * Custom moon texture.
-     *
-     * Return null to use the vanilla moon.
-     */
     public String getMoonTexture() {
         return null;
     }
 
-    /**
-     * Custom sun texture.
-     *
-     * Return null to use the vanilla sun.
-     */
     public String getSunTexture() {
         return null;
     }
@@ -77,32 +80,91 @@ public abstract class CelestialEvent {
     }
 
     public float getIntensity() {
-        return 1.0f;
+        return 1.0F;
     }
 
     public float getProgress() {
-        return 1.0f;
+        return 1.0F;
     }
 
     public void tick(Level level, boolean lastDaytime) {
     }
 
-    /**
-     * Additional horizontal movement of the moon during this event.
-     *
-     * 0.0 = normal moon position.
-     * Positive/negative values move the moon across the sky.
-     */
     public float getMoonEclipseOffset() {
         return 0.0F;
     }
 
-    /**
-     * Additional rotation of the moon during this event.
-     *
-     * Measured in degrees.
-     */
     public float getMoonEclipseAngle() {
         return 0.0F;
+    }
+
+    /**
+     * Updates the scheduler configuration if this event has one.
+     */
+    public void updateConfig(
+            boolean lastDaytime,
+            boolean isDaytime,
+            boolean active
+    ) {
+        if (config == null) {
+            return;
+        }
+
+        config.update(
+                lastDaytime,
+                isDaytime,
+                active
+        );
+    }
+
+    /**
+     * Checks whether this event's scheduler allows it to start.
+     *
+     * Events without a config cannot be started through the scheduler.
+     * They should implement their own shouldStart() logic instead.
+     */
+    public boolean canStart(
+            Level level,
+            boolean forced
+    ) {
+        if (config == null) {
+            return false;
+        }
+
+        return config.canStart(
+                forced,
+                level.random.nextDouble()
+        );
+    }
+
+    public CelestialEventConfig getConfig() {
+        return config;
+    }
+
+    /**
+     * Saves scheduler state if this event has a config.
+     */
+    public void saveConfig(CompoundTag parent) {
+        if (config == null) {
+            return;
+        }
+
+        parent.put(
+                name,
+                config.save()
+        );
+    }
+
+    /**
+     * Loads scheduler state if this event has a config.
+     */
+    public void loadConfig(CompoundTag parent) {
+        if (config == null || !parent.contains(name)) {
+            return;
+        }
+
+        config.load(
+                parent.getCompound(name)
+        );
     }
 }

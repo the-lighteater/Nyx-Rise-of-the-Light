@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "nyx_rotl:block/cracked_star_block"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/bow_pulling_1",
+  "parent": "minecraft:item/bow",
   "textures": {
     "layer0": "nyx_rotl:item/meteor_bow_pulling_1"
   }

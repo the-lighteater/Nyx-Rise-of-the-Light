@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "nyx_rotl:block/cracked_star_block",
+    "side": "nyx_rotl:block/cracked_star_block",
+    "top": "nyx_rotl:block/cracked_star_block"
+  }
+}

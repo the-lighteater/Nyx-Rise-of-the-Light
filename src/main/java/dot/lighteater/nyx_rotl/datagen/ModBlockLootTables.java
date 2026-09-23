@@ -19,6 +19,7 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Set;
@@ -40,6 +41,29 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.dropOther(ModBlocks.METEOR_ROCK.get(), ModItems.METEOR_SHARD.get());
 
         this.dropOther(ModBlocks.GLEANING_METEOR_ROCK.get(), ModItems.UNREFINED_CRYSTAL.get());
+
+        this.dropSelf(ModBlocks.METEOR_BLOCK.get());
+
+        this.dropSelf(ModBlocks.STAR_BLOCK.get());
+        this.dropSelf(ModBlocks.STAR_STAIRS.get());
+        this.dropSelf(ModBlocks.STAR_SLAB.get());
+        this.dropSelf(ModBlocks.STAR_FENCE.get());
+        this.dropSelf(ModBlocks.STAR_FENCE_GATE.get());
+        this.dropSelf(ModBlocks.STAR_WALL.get());
+
+        this.dropSelf(ModBlocks.CHISELED_STAR_BLOCK.get());
+        this.dropSelf(ModBlocks.CHISELED_STAR_STAIRS.get());
+        this.dropSelf(ModBlocks.CHISELED_STAR_SLAB.get());
+        this.dropSelf(ModBlocks.CHISELED_STAR_FENCE.get());
+        this.dropSelf(ModBlocks.CHISELED_STAR_FENCE_GATE.get());
+        this.dropSelf(ModBlocks.CHISELED_STAR_WALL.get());
+
+        this.dropSelf(ModBlocks.CRACKED_STAR_BLOCK.get());
+        this.dropSelf(ModBlocks.CRACKED_STAR_STAIRS.get());
+        this.dropSelf(ModBlocks.CRACKED_STAR_SLAB.get());
+        this.dropSelf(ModBlocks.CRACKED_STAR_FENCE.get());
+        this.dropSelf(ModBlocks.CRACKED_STAR_FENCE_GATE.get());
+        this.dropSelf(ModBlocks.CRACKED_STAR_WALL.get());
 
     }
 

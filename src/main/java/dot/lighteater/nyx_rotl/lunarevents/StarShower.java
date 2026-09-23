@@ -9,7 +9,16 @@ import net.minecraft.world.level.Level;
 public class StarShower extends CelestialEvent {
 
     public StarShower() {
-        super("star_shower");
+        super(
+                "star_shower",
+                new CelestialEventConfig(
+                        () -> Config.STAR_SHOWERS.get(),
+                        () -> Config.STAR_SHOWERS_CHANCE.get(),
+                        () -> Config.STAR_SHOWERS_START_NIGHT.get(),
+                        () -> Config.STAR_SHOWERS_INTERVAL.get(),
+                        () -> Config.STAR_SHOWERS_GRACE_DAYS.get()
+                )
+        );
     }
 
     @Override
@@ -23,13 +32,12 @@ public class StarShower extends CelestialEvent {
     }
 
     @Override
-    public boolean isSolarEvent() {
-        return false;
-    }
+    public boolean shouldStart(Level level, boolean lastDaytime, boolean forced) {
+        if (!lastDaytime || level.isDay()) {
+            return false;
+        }
 
-    @Override
-    public boolean shouldStart(Level level, boolean lastDaytime) {
-        return lastDaytime && !level.isDay();
+        return canStart(level, forced);
     }
 
     @Override
@@ -43,22 +51,18 @@ public class StarShower extends CelestialEvent {
     }
 
     @Override
-    public String getMoonTexture() {
-        return "blood_moon";
-    }
-
-    @Override
     public float getSkyModifier() {
-        return 0.5f;
+        return 0.5F;
     }
 
     @Override
     public float getMoonSizeMultiplier() {
-        return 1.5f;
+        return 1.5F;
     }
 
     @Override
     public void tick(Level level, boolean lastDaytime) {
-        // Nothing yet.
+        // Star Shower currently has no per-tick event logic.
+        // Meteor/falling-star spawning is handled elsewhere.
     }
 }

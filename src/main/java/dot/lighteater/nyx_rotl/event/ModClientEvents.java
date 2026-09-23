@@ -3,9 +3,7 @@ package dot.lighteater.nyx_rotl.event;
 import dot.lighteater.nyx_rotl.Config;
 import dot.lighteater.nyx_rotl.NyxROTL;
 import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
-import dot.lighteater.nyx_rotl.lunarevents.CelestialEvent;
-import dot.lighteater.nyx_rotl.lunarevents.SolarEclipse;
-import dot.lighteater.nyx_rotl.lunarevents.StarShower;
+import dot.lighteater.nyx_rotl.lunarevents.*;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
@@ -37,12 +35,14 @@ public class ModClientEvents {
      * that name to a LunarEvent here.
      */
     private static final List<CelestialEvent> CLIENT_EVENTS = List.of(
+            // Lunar Events
             new StarShower(),
+            new BloodMoon(),
+            new FullMoon(),
+            new HarvestMoon(),
+
+            // Solar Events
             new SolarEclipse()
-            // Add future client-relevant events here:
-            // new BloodMoon(),
-            // new FullMoon(),
-            // new HarvestMoon()
     );
 
     @SubscribeEvent

@@ -26,6 +26,30 @@
   "block.nyx_rotl.meteor_glass": "Meteor Glass",
   "block.nyx_rotl.meteor_rock": "Meteor Rock",
 
+  "block.nyx_rotl.star_block": "Star Block",
+  "block.nyx_rotl.star_block_stairs": "Star Block Stairs",
+  "block.nyx_rotl.star_block_slab": "Star Block Slab",
+  "block.nyx_rotl.star_block_wall": "Star Block Wall",
+  "block.nyx_rotl.star_block_fence": "Star Block Fence",
+  "block.nyx_rotl.star_block_fence_gate": "Star Block Fence Gate",
+
+  "block.nyx_rotl.chiseled_star_block": "Chiseled Star Block",
+  "block.nyx_rotl.chiseled_star_block_stairs": "Chiseled Star Block Stairs",
+  "block.nyx_rotl.chiseled_star_block_slab": "Chiseled Star Block Slab",
+  "block.nyx_rotl.chiseled_star_block_wall": "Chiseled Star Block Wall",
+  "block.nyx_rotl.chiseled_star_block_fence": "Chiseled Star Block Fence",
+  "block.nyx_rotl.chiseled_star_block_fence_gate": "Chiseled Star Block Fence Gate",
+
+  "block.nyx_rotl.cracked_star_block": "Cracked Star Block",
+  "block.nyx_rotl.cracked_star_block_stairs": "Cracked Star Block Stairs",
+  "block.nyx_rotl.cracked_star_block_slab": "Cracked Star Block Slab",
+  "block.nyx_rotl.cracked_star_block_wall": "Cracked Star Block Wall",
+  "block.nyx_rotl.cracked_star_block_fence": "Cracked Star Block Fence",
+  "block.nyx_rotl.cracked_star_block_fence_gate": "Cracked Star Block Fence Gate",
+
+  "enchantment.nyx_rotl.lunar_edge": "Lunar Edge",
+  "enchantment.nyx_rotl.lunar_shield": "Lunar Shield",
+
   "sounds.nyx_rotl.falling_meteor": "Falling Meteor",
   "sounds.nyx_rotl.falling_star": "Falling Star",
   "sounds.nyx_rotl.falling_meteor_impact": "Meteor Landed",

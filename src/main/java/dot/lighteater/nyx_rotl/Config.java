@@ -13,6 +13,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,31 +46,10 @@ public class Config
     public static final ForgeConfigSpec.DoubleValue fallingStarAmbientVolume;
     public static final ForgeConfigSpec.BooleanValue fullMoon;
     public static final ForgeConfigSpec.BooleanValue bloodMoonSleeping;
-//    public static final ForgeConfigSpec.IntValue bloodMoonSpawnMultiplier;
 //    public static final ForgeConfigSpec.ConfigValue<Set<String>> mobDuplicationBlacklist;
 //    public static final ForgeConfigSpec.BooleanValue isMobDuplicationWhitelist;
 //    public static final ForgeConfigSpec.BooleanValue bloodMoonVanish;
-//    public static final ForgeConfigSpec.IntValue bloodMoonSpawnRadius;
-//    public static final ForgeConfigSpec.BooleanValue harvestMoonOnFull;
-//    public static final ForgeConfigSpec.BooleanValue bloodMoonOnFull;
     public static final ForgeConfigSpec.BooleanValue moonEventTint;
-//    public static final ForgeConfigSpec.IntValue harvestMoonGrowAmount;
-//    public static final ForgeConfigSpec.IntValue harvestMoonGrowInterval;
-//    public static final ForgeConfigSpec.BooleanValue harvestMoonEnabled;
-//    public static final ForgeConfigSpec.DoubleValue harvestMoonChance;
-//    public static final ForgeConfigSpec.IntValue harvestMoonStartNight;
-//    public static final ForgeConfigSpec.IntValue harvestMoonInterval;
-//    public static final ForgeConfigSpec.IntValue harvestMoonGraceDays;
-//    public static final ForgeConfigSpec.BooleanValue starShowersEnabled;
-//    public static final ForgeConfigSpec.DoubleValue starShowersChance;
-//    public static final ForgeConfigSpec.IntValue starShowersStartNight;
-//    public static final ForgeConfigSpec.IntValue starShowersInterval;
-//    public static final ForgeConfigSpec.IntValue starShowersGraceDays;
-//    public static final ForgeConfigSpec.BooleanValue bloodMoonEnabled;
-//    public static final ForgeConfigSpec.DoubleValue bloodMoonChance;
-//    public static final ForgeConfigSpec.IntValue bloodMoonStartNight;
-//    public static final ForgeConfigSpec.IntValue bloodMoonInterval;
-//    public static final ForgeConfigSpec.IntValue bloodMoonGraceDays;
 //    public static final ForgeConfigSpec.ConfigValue<Integer[]> lunarWaterTicks;
     public static final ForgeConfigSpec.DoubleValue meteorChance;
     public static final ForgeConfigSpec.DoubleValue meteorChanceNight;
@@ -109,7 +89,41 @@ public class Config
 
     public static final ForgeConfigSpec.ConfigValue<Double> meteorKatChance;
 
+    public static final ForgeConfigSpec.BooleanValue HARVEST_MOON;
+    public static final ForgeConfigSpec.DoubleValue HARVEST_MOON_CHANCE;
+    public static final ForgeConfigSpec.IntValue HARVEST_MOON_START_NIGHT;
+    public static final ForgeConfigSpec.IntValue HARVEST_MOON_INTERVAL;
+    public static final ForgeConfigSpec.IntValue HARVEST_MOON_GRACE_PERIOD;
 
+    public static final ForgeConfigSpec.IntValue HARVEST_MOON_COLOR;
+    public static final ForgeConfigSpec.BooleanValue HARVEST_MOON_ON_FULL;
+    public static final ForgeConfigSpec.IntValue HARVEST_MOON_GROW_AMOUNT;
+    public static final ForgeConfigSpec.IntValue HARVEST_MOON_GROW_INTERVAL;
+
+    public static final ForgeConfigSpec.BooleanValue STAR_SHOWERS;
+    public static final ForgeConfigSpec.DoubleValue STAR_SHOWERS_CHANCE;
+    public static final ForgeConfigSpec.IntValue STAR_SHOWERS_START_NIGHT;
+    public static final ForgeConfigSpec.IntValue STAR_SHOWERS_INTERVAL;
+    public static final ForgeConfigSpec.IntValue STAR_SHOWERS_GRACE_DAYS;
+
+    public static final ForgeConfigSpec.BooleanValue SOLAR_ECLIPSE;
+    public static final ForgeConfigSpec.DoubleValue SOLAR_ECLIPSE_CHANCE;
+    public static final ForgeConfigSpec.IntValue SOLAR_ECLIPSE_START_DAY;
+    public static final ForgeConfigSpec.IntValue SOLAR_ECLIPSE_INTERVAL;
+    public static final ForgeConfigSpec.IntValue SOLAR_ECLIPSE_GRACE_DAYS;
+
+    public static final ForgeConfigSpec.BooleanValue BLOOD_MOON;
+    public static final ForgeConfigSpec.DoubleValue BLOOD_MOON_CHANCE;
+    public static final ForgeConfigSpec.IntValue BLOOD_MOON_START_NIGHT;
+    public static final ForgeConfigSpec.IntValue BLOOD_MOON_INTERVAL;
+    public static final ForgeConfigSpec.IntValue BLOOD_MOON_GRACE_PERIOD;
+
+    public static final ForgeConfigSpec.BooleanValue BLOOD_MOON_ON_FULL;
+    public static final ForgeConfigSpec.IntValue BLOOD_MOON_SPAWN_MULTIPLIER;
+    public static final ForgeConfigSpec.DoubleValue BLOOD_MOON_SPAWN_RADIUS;
+    public static final ForgeConfigSpec.BooleanValue IS_MOB_DUPLICATION_WHITELIST;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> BLOOD_MOON_BLACKLIST;
+    public static final ForgeConfigSpec.IntValue COLOR_BLOOD_MOON;
 
 
     static {
@@ -132,7 +146,7 @@ public class Config
                 .defineInRange("Min Level Lunar Edge Damage", 1.25, 0, 100);
 
         maxLevelLunarEdgeDamage = BUILDER.comment("The amount of additional damage that should be applied to an item with max level lunar edge on a full moon.")
-                .defineInRange("Min Level Lunar Edge Damage", 3.25, 0, 100);
+                .defineInRange("Max Level Lunar Edge Damage", 3.25, 0, 100);
 
         baseLunarEdgeDamage = BUILDER.comment("The amount of additional damage that will always be applied regardless of moon phase.")
                         .defineInRange("Base Lunar Edge Damage", 0.0, 0.0, 100);
@@ -162,6 +176,30 @@ public class Config
 
         BUILDER.pop();
 
+        BUILDER.push("Solar Eclipses");
+
+        SOLAR_ECLIPSE = BUILDER
+                .comment("If Solar Eclipses should be enabled")
+                .define("solarEclipse", true);
+
+        SOLAR_ECLIPSE_CHANCE = BUILDER
+                .comment("The chance in percent (1 = 100%) of a Solar Eclipse occurring")
+                .defineInRange("solarEclipseChance", 0.05D, 0.0D, 1.0D);
+
+        SOLAR_ECLIPSE_START_DAY = BUILDER
+                .comment("The amount of days that should pass before a Solar Eclipse can occur for the first time")
+                .defineInRange("solarEclipseStartDay", 0, 0, 1000);
+
+        SOLAR_ECLIPSE_INTERVAL = BUILDER
+                .comment("The interval in days at which Solar Eclipses should occur. Overrides the chance setting if greater than 0.")
+                .defineInRange("solarEclipseInterval", 0, 0, 1000);
+
+        SOLAR_ECLIPSE_GRACE_DAYS = BUILDER
+                .comment("The amount of days that should pass until another Solar Eclipse can happen")
+                .defineInRange("solarEclipseGraceDays", 0, 0, 1000);
+
+        BUILDER.pop();
+
         BUILDER.pop();
 
         BUILDER.push("Moons");
@@ -181,7 +219,98 @@ public class Config
 
         BUILDER.pop();
 
+        BUILDER.push("Harvest Moons");
+
+        HARVEST_MOON = BUILDER
+                .comment("If the Harvest Moon should be enabled")
+                .define("harvestMoon", true);
+
+        HARVEST_MOON_CHANCE = BUILDER
+                .comment("The chance in percent (1 = 100%) of the Harvest Moon occurring")
+                .defineInRange("harvestMoonChance", 0.05D, 0.0D, 1.0D);
+
+        HARVEST_MOON_START_NIGHT = BUILDER
+                .comment("The amount of nights that should pass before the Harvest Moon occurs for the first time")
+                .defineInRange("harvestMoonStartNight", 0, 0, 1000);
+
+        HARVEST_MOON_INTERVAL = BUILDER
+                .comment("The interval in nights at which the Harvest Moon should occur. " +
+                        "Overrides the chance setting if greater than 0.")
+                .defineInRange("harvestMoonInterval", 0, 0, 1000);
+
+        HARVEST_MOON_GRACE_PERIOD = BUILDER
+                .comment("The amount of nights that should pass until the Harvest Moon can happen again")
+                .defineInRange("harvestMoonGracePeriod", 0, 0, 1000);
+
+        HARVEST_MOON_COLOR = BUILDER
+                .comment("The color used for the Harvest Moon sky tint.")
+                .defineInRange("harvestMoonColor", 0x3F3FC0, 0, 0xFFFFFF);
+
+        HARVEST_MOON_ON_FULL = BUILDER
+                .comment("If the Harvest Moon should only occur on full moon nights")
+                .define("harvestMoonOnFull", true);
+
+        HARVEST_MOON_GROW_AMOUNT = BUILDER
+                .comment("The amount of plants that should be grown per processed chunk during the Harvest Moon")
+                .defineInRange("harvestMoonGrowAmount", 15, 0, 100);
+
+        HARVEST_MOON_GROW_INTERVAL = BUILDER
+                .comment("The amount of ticks that should pass before plants are grown again")
+                .defineInRange("harvestMoonGrowInterval", 10, 1, 100);
+
+        BUILDER.pop();
+
         BUILDER.push("Blood Moons");
+
+        BLOOD_MOON = BUILDER
+                .comment("If Blood Moons should be enabled")
+                .define("bloodMoon", true);
+
+        BLOOD_MOON_CHANCE = BUILDER
+                .comment("The chance in percent (1 = 100%) of the Blood Moon occurring")
+                .defineInRange("bloodMoonChance", 0.05D, 0.0D, 1.0D);
+
+        BLOOD_MOON_START_NIGHT = BUILDER
+                .comment("The amount of nights that should pass before the Blood Moon occurs for the first time")
+                .defineInRange("bloodMoonStartNight", 0, 0, 1000);
+
+        BLOOD_MOON_INTERVAL = BUILDER
+                .comment("The interval in nights at which Blood Moons should occur. Overrides the chance setting if greater than 0.")
+                .defineInRange("bloodMoonInterval", 0, 0, 1000);
+
+        BLOOD_MOON_GRACE_PERIOD = BUILDER
+                .comment("The amount of nights that should pass until another Blood Moon can happen")
+                .defineInRange("bloodMoonGracePeriod", 0, 0, 1000);
+
+        BLOOD_MOON_ON_FULL = BUILDER
+                .comment("If the Blood Moon should only occur on full moon nights")
+                .define("bloodMoonOnFull", true);
+
+        BLOOD_MOON_SPAWN_MULTIPLIER = BUILDER
+                .comment("Multiplier for the maximum number of mobs that can spawn during a Blood Moon")
+                .defineInRange("bloodMoonSpawnMultiplier", 2, 1, 100);
+
+        BLOOD_MOON_SPAWN_RADIUS = BUILDER
+                .comment("Minimum distance from players at which Blood Moon mobs can spawn")
+                .defineInRange("bloodMoonSpawnRadius", 24.0D, 0.0D, 256.0D);
+
+        IS_MOB_DUPLICATION_WHITELIST = BUILDER
+                .comment("If the Blood Moon mob list should be treated as a whitelist instead of a blacklist")
+                .define("isMobDuplicationWhitelist", false);
+
+        BLOOD_MOON_BLACKLIST = BUILDER
+                .comment("Entity IDs used by the Blood Moon mob whitelist/blacklist")
+                .defineList(
+                        "bloodMoonBlacklist",
+                        List.of("minecraft:zombie",
+                                "minecraft:cave_spider",
+                                "minecraft:endermite"),
+                        value -> value instanceof String
+                );
+
+        COLOR_BLOOD_MOON = BUILDER
+                .comment("The color used for the Blood Moon sky tint")
+                .defineInRange("colorBloodMoon", 0x600000, 0x000000, 0xFFFFFF);
 
         bloodMoonSleeping = BUILDER.comment("If sleeping is allowed during a blood moon")
                         .define("Blood Moon Sleeping", false);
@@ -190,8 +319,29 @@ public class Config
 
         BUILDER.push("Star Showers");
 
-        colorStarShower = BUILDER.comment("The hex code of the star shower color")
-                        .defineInRange("Star Shower Color", 0xDEC25F, 0x000000, 0xFFFFFF);
+        STAR_SHOWERS = BUILDER
+                .comment("If Star Showers should be enabled")
+                .define("starShowers", true);
+
+        STAR_SHOWERS_CHANCE = BUILDER
+                .comment("The chance in percent (1 = 100%) of a Star Shower occurring")
+                .defineInRange("starShowersChance", 0.05D, 0.0D, 1.0D);
+
+        STAR_SHOWERS_START_NIGHT = BUILDER
+                .comment("The amount of nights that should pass before Star Showers can occur for the first time")
+                .defineInRange("starShowersStartNight", 0, 0, 1000);
+
+        STAR_SHOWERS_INTERVAL = BUILDER
+                .comment("The interval in nights at which Star Showers should occur. Overrides the chance setting if greater than 0.")
+                .defineInRange("starShowersInterval", 0, 0, 1000);
+
+        STAR_SHOWERS_GRACE_DAYS = BUILDER
+                .comment("The amount of nights that should pass until another Star Shower can happen")
+                .defineInRange("starShowersGraceDays", 0, 0, 1000);
+
+        colorStarShower = BUILDER
+                .comment("The hex code of the star shower color")
+                .defineInRange("Star Shower Color", 0xDEC25F, 0x000000, 0xFFFFFF);
 
         BUILDER.pop();
 
@@ -371,13 +521,5 @@ public class Config
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event)
     {
-    }
-
-    public static class LunarEventConfig {
-        public boolean enabled;
-        public double chance;
-        public int startNight;
-        public int nightInterval;
-        public int graceDays;
     }
 }

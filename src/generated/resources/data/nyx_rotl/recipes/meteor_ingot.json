@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "nyx_rotl:meteor_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "nyx_rotl:meteor_ingot"
+  }
+}

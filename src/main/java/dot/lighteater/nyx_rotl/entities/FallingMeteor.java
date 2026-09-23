@@ -2,7 +2,6 @@ package dot.lighteater.nyx_rotl.entities;
 
 import com.mojang.logging.LogUtils;
 import dot.lighteater.nyx_rotl.Config;
-import dot.lighteater.nyx_rotl.NyxROTL;
 import dot.lighteater.nyx_rotl.blocks.ModBlocks;
 import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
 import dot.lighteater.nyx_rotl.lunarevents.HarvestMoon;
@@ -37,8 +36,6 @@ import net.minecraft.util.Mth;
 import java.util.List;
 
 public class FallingMeteor extends Entity {
-
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     private static final EntityDataAccessor<Integer> SIZE =
             SynchedEntityData.defineId(
@@ -275,8 +272,6 @@ public class FallingMeteor extends Entity {
             return;
         }
 
-        LOGGER.debug("Hit solid ground...");
-
         Explosion explosion = level.explode(
                 this,
                 getX(),
@@ -315,15 +310,11 @@ public class FallingMeteor extends Entity {
             }
         }
 
-        LOGGER.debug("Processing explosion...");
-
         discard();
 
         if (!disableMessage) {
             broadcastImpact(level);
         }
-
-        LOGGER.debug("Sending message...");
     }
 
     // -----------------------------------

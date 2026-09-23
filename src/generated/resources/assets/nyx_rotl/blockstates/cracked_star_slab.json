@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "nyx_rotl:block/cracked_star_slab"
+    },
+    "type=double": {
+      "model": "nyx_rotl:block/cracked_star_block"
+    },
+    "type=top": {
+      "model": "nyx_rotl:block/cracked_star_slab_top"
+    }
+  }
+}

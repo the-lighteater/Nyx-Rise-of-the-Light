@@ -11,13 +11,19 @@ public class SolarEclipse extends CelestialEvent {
     private static final int ECLIPSE_DURATION = 12000;
 
     private int elapsedTicks = 0;
+    private boolean active = false;
 
     public SolarEclipse() {
-        super("solar_eclipse");
-    }
-
-    public void reset() {
-        elapsedTicks = 0;
+        super(
+                "solar_eclipse",
+                new CelestialEventConfig(
+                        () -> Config.SOLAR_ECLIPSE.get(),
+                        () -> Config.SOLAR_ECLIPSE_CHANCE.get(),
+                        () -> Config.SOLAR_ECLIPSE_START_DAY.get(),
+                        () -> Config.SOLAR_ECLIPSE_INTERVAL.get(),
+                        () -> Config.SOLAR_ECLIPSE_GRACE_DAYS.get()
+                )
+        );
     }
 
     @Override
@@ -36,13 +42,30 @@ public class SolarEclipse extends CelestialEvent {
     }
 
     @Override
-    public boolean shouldStart(Level level, boolean lastDaytime) {
-        return !lastDaytime && level.isDay();
+    public boolean shouldStart(Level level, boolean lastDaytime, boolean forced) {
+        // Solar eclipses begin when night transitions into day.
+        if (lastDaytime || !level.isDay()) {
+            return false;
+        }
+
+        return canStart(level, forced);
     }
 
     @Override
     public boolean shouldStop(Level level, boolean lastDaytime) {
-        return elapsedTicks >= ECLIPSE_DURATION;
+        return !active || elapsedTicks >= ECLIPSE_DURATION;
+    }
+
+    @Override
+    public void onStart(Level level) {
+        elapsedTicks = 0;
+        active = true;
+    }
+
+    @Override
+    public void onStop(Level level) {
+        elapsedTicks = 0;
+        active = false;
     }
 
     @Override
@@ -100,6 +123,10 @@ public class SolarEclipse extends CelestialEvent {
 
     @Override
     public void tick(Level level, boolean lastDaytime) {
+        if (!active) {
+            return;
+        }
+
         elapsedTicks++;
     }
 
@@ -107,8 +134,6 @@ public class SolarEclipse extends CelestialEvent {
     public float getMoonEclipseOffset() {
         float progress = getProgress();
 
-        // Start to the left.
-        // Finish to the right.
         return (progress - 0.5F) * 20.0F;
     }
 
@@ -116,12 +141,10 @@ public class SolarEclipse extends CelestialEvent {
     public float getMoonEclipseAngle() {
         float progress = getProgress();
 
-        // Moon travels from one side of the sky,
-        // directly across the sun, to the other side.
-        //
-        // Start:    90°
-        // Totality: 180°
-        // End:      270°
         return 180.0F + (progress - 0.5F) * 180.0F;
+    }
+
+    public void reset() {
+        elapsedTicks = 0;
     }
 }

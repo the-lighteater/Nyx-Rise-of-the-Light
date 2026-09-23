@@ -19,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {
 
+    private ResourceLocation cachedMoon = null;
+
     // ============================================================
     // SUN
     // ============================================================
@@ -83,10 +85,13 @@ public class LevelRendererMixin {
             return original;
         }
 
-        return new ResourceLocation(
-                NyxROTL.MODID,
-                "textures/moon/" + moonTexture + ".png"
-        );
+        ResourceLocation newMoon = new ResourceLocation(NyxROTL.MODID, "textures/moon/" + moonTexture + ".png");
+
+        if (cachedMoon == null || !cachedMoon.equals(newMoon)) {
+            cachedMoon = newMoon;
+        }
+
+        return cachedMoon;
     }
 
     // ============================================================

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_fence_gate",
+  "textures": {
+    "texture": "nyx_rotl:block/cracked_star_block"
+  }
+}

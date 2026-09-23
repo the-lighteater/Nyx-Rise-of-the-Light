@@ -114,6 +114,22 @@ public class PacketNyxWorld {
             NyxWorld.clientEventSkyModifier =
                     msg.skyModifier;
 
+            // Debug celestial event data
+            NyxROTL.LOGGER.debug(
+                    "Client received currentEvent: {}",
+                    NyxWorld.clientCurrentEvent
+            );
+
+            NyxROTL.LOGGER.debug(
+                    "Client received eventSkyColor: {}",
+                    NyxWorld.clientEventSkyColor
+            );
+
+            NyxROTL.LOGGER.debug(
+                    "Client received eventSkyModifier: {}",
+                    NyxWorld.clientEventSkyModifier
+            );
+
             // Meteor data
             NyxWorld.clientMeteorLandingSites.clear();
             NyxWorld.clientMeteorLandingSites.addAll(

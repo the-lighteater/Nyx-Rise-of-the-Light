@@ -3,9 +3,11 @@ package dot.lighteater.nyx_rotl;
 import com.mojang.logging.LogUtils;
 import dot.lighteater.nyx_rotl.blocks.ModBlockEntities;
 import dot.lighteater.nyx_rotl.blocks.ModBlocks;
+import dot.lighteater.nyx_rotl.enchantments.ModEnchantments;
 import dot.lighteater.nyx_rotl.entities.EmptyRenderer;
 import dot.lighteater.nyx_rotl.entities.MeteorKatRenderer;
 import dot.lighteater.nyx_rotl.entities.MeteorRenderer;
+import dot.lighteater.nyx_rotl.event.ModItemProperties;
 import dot.lighteater.nyx_rotl.fluid.ModFluidTypes;
 import dot.lighteater.nyx_rotl.fluid.ModFluids;
 import dot.lighteater.nyx_rotl.item.ModCreativeModTabs;
@@ -50,8 +52,9 @@ public class NyxROTL
         ModFluids.register(modEventBus);
         ModFluidTypes.register(modEventBus);
 
-        PacketHandler.init();
+        ModEnchantments.register(modEventBus);
 
+        PacketHandler.init();
 
         ModEntities.register(modEventBus);
 
@@ -93,6 +96,8 @@ public class NyxROTL
                     ModBlocks.METEOR_GLASS.get(),
                     RenderType.translucent()
             );
+
+            ModItemProperties.register();
         }
     }
 }

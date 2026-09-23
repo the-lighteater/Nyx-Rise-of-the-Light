@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "nyx_rotl:block/chiseled_star_block"
+  }
+}
