@@ -13,8 +13,7 @@ import java.util.List;
 
 public class ModToolTiers {
     public static final Tier METEOR = TierSortingRegistry.registerTier(
-            new ForgeTier(5, 1500, 5f, 4f, 25,
+            new ForgeTier(5, 1500, 0f, 4f, 25,
                     ModTags.Blocks.NEEDS_METEOR_TOOL, () -> Ingredient.of(ModItems.METEOR_INGOT.get())),
             new ResourceLocation(NyxROTL.MODID, "meteor"), List.of(Tiers.NETHERITE), List.of());
-
 }

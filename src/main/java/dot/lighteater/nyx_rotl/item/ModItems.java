@@ -48,19 +48,19 @@ public class ModItems {
             () -> new BowItem(new Item.Properties()));
 
     public static final RegistryObject<Item> METEOR_AXE = ITEMS.register("meteor_axe",
-            () -> new MeteorAxe(ModToolTiers.METEOR, 5, .4f, new Item.Properties()));
+            () -> new MeteorAxe(ModToolTiers.METEOR, 4, -3f, new Item.Properties()));
 
     public static final RegistryObject<Item> METEOR_PICKAXE = ITEMS.register("meteor_pickaxe",
-            () -> new PickaxeItem(ModToolTiers.METEOR, 0, 0f, new Item.Properties()));
+            () -> new PickaxeItem(ModToolTiers.METEOR, 0, -2.8f, new Item.Properties()));
 
     public static final RegistryObject<Item> METEOR_SHOVEL = ITEMS.register("meteor_shovel",
-            () -> new ShovelItem(ModToolTiers.METEOR, 0, 0f, new Item.Properties()));
+            () -> new ShovelItem(ModToolTiers.METEOR, 0, -3f, new Item.Properties()));
 
     public static final RegistryObject<Item> METEOR_HOE = ITEMS.register("meteor_hoe",
             () -> new HoeItem(ModToolTiers.METEOR, 0, 0f, new Item.Properties()));
 
     public static final RegistryObject<Item> METEOR_SWORD = ITEMS.register("meteor_sword",
-            () -> new SwordItem(ModToolTiers.METEOR, 2, .8f, new Item.Properties()));
+            () -> new SwordItem(ModToolTiers.METEOR, 2, -2.4f, new Item.Properties()));
 
     public static final RegistryObject<Item> METEOR_HELMET = ITEMS.register("meteor_helmet",
             () -> new ArmorItem(ModArmorMaterials.METEOR, ArmorItem.Type.HELMET, new Item.Properties()));
