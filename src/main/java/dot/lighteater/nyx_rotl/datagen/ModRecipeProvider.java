@@ -77,6 +77,15 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.METEOR_PICKAXE.get())
                 .pattern("MMM")
+                .pattern(" S ")
+                .pattern(" S ")
+                .define('M', ModItems.METEOR_INGOT.get())
+                .define('S', Items.STICK)
+                .unlockedBy(getHasName(ModItems.METEOR_INGOT.get()), has(ModItems.METEOR_INGOT.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.METEOR_HOE.get())
+                .pattern("MM")
                 .pattern(" S")
                 .pattern(" S")
                 .define('M', ModItems.METEOR_INGOT.get())
@@ -102,7 +111,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.METEOR_INGOT.get()), has(ModItems.METEOR_INGOT.get()))
                 .save(pWriter);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.METEOR_SWORD.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.METEOR_HAMMER.get())
                 .pattern("MMM")
                 .pattern("MMM")
                 .pattern(" S ")
@@ -111,7 +120,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.METEOR_INGOT.get()), has(ModItems.METEOR_INGOT.get()))
                 .save(pWriter);
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.METEOR_SWORD.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SCYTHE.get())
                 .pattern("MMM")
                 .pattern("M S")
                 .pattern("  S")
@@ -144,14 +153,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.STAR_FENCE.get())
                 .pattern("SFS")
                 .define('S', ModBlocks.STAR_BLOCK.get())
-                .define('S', ModItems.FALLEN_STAR.get())
+                .define('F', ModItems.FALLEN_STAR.get())
                 .unlockedBy(getHasName(ModItems.METEOR_INGOT.get()), has(ModItems.METEOR_INGOT.get()))
                 .save(pWriter);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.STAR_FENCE_GATE.get())
                 .pattern("FSF")
                 .define('S', ModBlocks.STAR_BLOCK.get())
-                .define('S', ModItems.FALLEN_STAR.get())
+                .define('F', ModItems.FALLEN_STAR.get())
                 .unlockedBy(getHasName(ModItems.METEOR_INGOT.get()), has(ModItems.METEOR_INGOT.get()))
                 .save(pWriter);
 
@@ -179,14 +188,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CRACKED_STAR_FENCE.get())
                 .pattern("SFS")
                 .define('S', ModBlocks.CRACKED_STAR_BLOCK.get())
-                .define('S', ModItems.FALLEN_STAR.get())
+                .define('F', ModItems.FALLEN_STAR.get())
                 .unlockedBy(getHasName(ModItems.METEOR_INGOT.get()), has(ModItems.METEOR_INGOT.get()))
                 .save(pWriter);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CRACKED_STAR_FENCE_GATE.get())
                 .pattern("FSF")
                 .define('S', ModBlocks.CRACKED_STAR_BLOCK.get())
-                .define('S', ModItems.FALLEN_STAR.get())
+                .define('F', ModItems.FALLEN_STAR.get())
                 .unlockedBy(getHasName(ModItems.METEOR_INGOT.get()), has(ModItems.METEOR_INGOT.get()))
                 .save(pWriter);
 
@@ -214,14 +223,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CHISELED_STAR_FENCE.get())
                 .pattern("SFS")
                 .define('S', ModBlocks.CHISELED_STAR_BLOCK.get())
-                .define('S', ModItems.FALLEN_STAR.get())
+                .define('F', ModItems.FALLEN_STAR.get())
                 .unlockedBy(getHasName(ModItems.METEOR_INGOT.get()), has(ModItems.METEOR_INGOT.get()))
                 .save(pWriter);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CHISELED_STAR_FENCE_GATE.get())
                 .pattern("FSF")
                 .define('S', ModBlocks.CHISELED_STAR_BLOCK.get())
-                .define('S', ModItems.FALLEN_STAR.get())
+                .define('F', ModItems.FALLEN_STAR.get())
                 .unlockedBy(getHasName(ModItems.METEOR_INGOT.get()), has(ModItems.METEOR_INGOT.get()))
                 .save(pWriter);
 

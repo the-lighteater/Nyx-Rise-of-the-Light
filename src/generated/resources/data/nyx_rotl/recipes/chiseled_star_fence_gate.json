@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "nyx_rotl:fallen_star"
+    },
+    "S": {
+      "item": "nyx_rotl:chiseled_star_block"
+    }
+  },
+  "pattern": [
+    "FSF"
+  ],
+  "result": {
+    "item": "nyx_rotl:chiseled_star_fence_gate"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "item": "nyx_rotl:cracked_star_block"
+    }
+  },
+  "pattern": [
+    "SSS"
+  ],
+  "result": {
+    "item": "nyx_rotl:cracked_star_slab"
+  },
+  "show_notification": true
+}

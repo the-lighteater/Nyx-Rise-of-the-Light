@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "nyx_rotl:fallen_star"
+    },
+    "S": {
+      "item": "nyx_rotl:cracked_star_block"
+    }
+  },
+  "pattern": [
+    "SFS"
+  ],
+  "result": {
+    "item": "nyx_rotl:cracked_star_fence"
+  },
+  "show_notification": true
+}
