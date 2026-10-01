@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "category": "blocks",
+  "cookingtime": 100,
+  "experience": 0.05,
+  "group": "cracked_star_block",
+  "ingredient": {
+    "item": "nyx_rotl:star_block"
+  },
+  "result": "nyx_rotl:cracked_star_block"
+}

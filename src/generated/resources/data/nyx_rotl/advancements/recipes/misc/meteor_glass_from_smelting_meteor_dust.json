@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_gleaning_meteor_rock": {
+    "has_meteor_dust": {
       "conditions": {
         "items": [
           {
             "items": [
-              "nyx_rotl:gleaning_meteor_rock"
+              "nyx_rotl:meteor_dust"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "nyx_rotl:meteor_ingot_from_blasting_gleaning_meteor_rock"
+        "recipe": "nyx_rotl:meteor_glass_from_smelting_meteor_dust"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_gleaning_meteor_rock",
+      "has_meteor_dust",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "nyx_rotl:meteor_ingot_from_blasting_gleaning_meteor_rock"
+      "nyx_rotl:meteor_glass_from_smelting_meteor_dust"
     ]
   },
   "sends_telemetry_event": false

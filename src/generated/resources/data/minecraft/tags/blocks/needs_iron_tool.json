@@ -1,3 +1,23 @@
 {
-  "values": []
+  "values": [
+    "nyx_rotl:crystal",
+    "nyx_rotl:star_block",
+    "nyx_rotl:star_stairs",
+    "nyx_rotl:star_slab",
+    "nyx_rotl:star_fence",
+    "nyx_rotl:star_fence_gate",
+    "nyx_rotl:star_wall",
+    "nyx_rotl:chiseled_star_block",
+    "nyx_rotl:chiseled_star_stairs",
+    "nyx_rotl:chiseled_star_slab",
+    "nyx_rotl:chiseled_star_fence",
+    "nyx_rotl:chiseled_star_fence_gate",
+    "nyx_rotl:chiseled_star_wall",
+    "nyx_rotl:cracked_star_block",
+    "nyx_rotl:cracked_star_stairs",
+    "nyx_rotl:cracked_star_slab",
+    "nyx_rotl:cracked_star_fence",
+    "nyx_rotl:cracked_star_fence_gate",
+    "nyx_rotl:cracked_star_wall"
+  ]
 }

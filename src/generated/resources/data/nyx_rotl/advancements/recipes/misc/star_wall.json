@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_meteor_ingot": {
+    "has_star_block": {
       "conditions": {
         "items": [
           {
             "items": [
-              "nyx_rotl:meteor_ingot"
+              "nyx_rotl:star_block"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_meteor_ingot",
+      "has_star_block",
       "has_the_recipe"
     ]
   ],

@@ -39,10 +39,13 @@ public class ModItems {
             () -> new MeteorFinder(new Item.Properties()));
 
     public static final RegistryObject<Item> METEOR_HAMMER = ITEMS.register("meteor_hammer",
-            () -> new Item(new Item.Properties()));
+            () -> new MeteorHammer(ModToolTiers.METEOR, 15, -3.2F, new Item.Properties()));
 
     public static final RegistryObject<Item> SCYTHE = ITEMS.register("scythe",
-            () -> new Item(new Item.Properties()));
+            () -> new GleaningScythe(
+                    ModToolTiers.GLEANING,
+                    new Item.Properties()
+            ));
 
     public static final RegistryObject<Item> METEOR_BOW = ITEMS.register("meteor_bow",
             () -> new BowItem(new Item.Properties()));

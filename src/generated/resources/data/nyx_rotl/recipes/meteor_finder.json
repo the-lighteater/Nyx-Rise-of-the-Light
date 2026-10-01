@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_powder"
+    },
+    "C": {
+      "item": "minecraft:compass"
+    },
+    "D": {
+      "item": "nyx_rotl:meteor_dust"
+    }
+  },
+  "pattern": [
+    " B ",
+    "DCD",
+    " D "
+  ],
+  "result": {
+    "item": "nyx_rotl:meteor_finder"
+  },
+  "show_notification": true
+}

@@ -80,6 +80,8 @@ public class Config
 //    public static final ForgeConfigSpec.ConfigValue<Set<LunarWaterSource>> lunarWaterRemoveNegative;
 //    public static final ForgeConfigSpec.ConfigValue<Set<LunarWaterSource>> lunarWaterRemoveAll;
 
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> SCYTHE_DROP_CHANCES;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> SCYTHE_DROP_BLACKLIST;
 
     public static final ForgeConfigSpec.IntValue colorStarShower;
 
@@ -459,6 +461,40 @@ public class Config
 
         crystalDurability = BUILDER.comment("The max durability of the crystal")
                 .define("Max crystal durability", 1000);
+
+        BUILDER.pop();
+
+        BUILDER.push("Scythe");
+
+        SCYTHE_DROP_BLACKLIST = BUILDER
+                .comment(
+                        "Items that the Scythe should not multiply.",
+                        "Use item registry names such as 'minecraft:wheat_seeds'."
+                )
+                .defineList(
+                        "Scythe Drop Blacklist",
+                        List.of(),
+                        value -> value instanceof String
+                );
+
+        SCYTHE_DROP_CHANCES = BUILDER
+                .comment(
+                        "The drop chances for the Scythe. The order of this list matters.",
+                        "For each drop, the Scythe checks these entries in order.",
+                        "Each entry uses the format 'chance;drop_multiplier'.",
+                        "If a chance succeeds, that multiplier is applied and the remaining entries are ignored.",
+                        "Example: '0.6;2' means a 60% chance to double the drop.",
+                        "If the list is empty, drops will not be multiplied."
+                )
+                .defineList(
+                        "Scythe Drop Chances",
+                        List.of(
+                                "0.6;2",
+                                "0.4;3",
+                                "0.2;4"
+                        ),
+                        value -> value instanceof String
+                );
 
         BUILDER.pop();
 

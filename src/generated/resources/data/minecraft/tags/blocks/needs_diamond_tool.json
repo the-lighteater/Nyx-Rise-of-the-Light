@@ -1,3 +1,8 @@
 {
-  "values": []
+  "values": [
+    "nyx_rotl:meteor_rock",
+    "nyx_rotl:gleaning_meteor_rock",
+    "nyx_rotl:meteor_block",
+    "nyx_rotl:meteor_glass"
+  ]
 }

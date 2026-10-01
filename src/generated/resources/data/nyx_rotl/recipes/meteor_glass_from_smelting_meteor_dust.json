@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.05,
+  "group": "meteor_glass",
+  "ingredient": {
+    "item": "nyx_rotl:meteor_dust"
+  },
+  "result": "nyx_rotl:meteor_glass"
+}
