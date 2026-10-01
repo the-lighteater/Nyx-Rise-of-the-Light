@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_gleaning_meteor_rock": {
+    "has_star_block": {
       "conditions": {
         "items": [
           {
             "items": [
-              "nyx_rotl:gleaning_meteor_rock"
+              "nyx_rotl:star_block"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "nyx_rotl:meteor_ingot_from_smelting_gleaning_meteor_rock"
+        "recipe": "nyx_rotl:cracked_star_block_from_blasting_star_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_gleaning_meteor_rock",
+      "has_star_block",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "nyx_rotl:meteor_ingot_from_smelting_gleaning_meteor_rock"
+      "nyx_rotl:cracked_star_block_from_blasting_star_block"
     ]
   },
   "sends_telemetry_event": false

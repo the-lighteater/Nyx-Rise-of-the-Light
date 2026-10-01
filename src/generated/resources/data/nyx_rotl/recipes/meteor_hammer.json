@@ -2,17 +2,23 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": {
-      "item": "nyx_rotl:meteor_ingot"
+    "B": {
+      "item": "nyx_rotl:meteor_block"
+    },
+    "D": {
+      "item": "nyx_rotl:meteor_dust"
+    },
+    "L": {
+      "item": "minecraft:leather"
     },
     "S": {
       "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "MMM",
-    "MMM",
-    " S "
+    "BBB",
+    "DSD",
+    "LSL"
   ],
   "result": {
     "item": "nyx_rotl:meteor_hammer"

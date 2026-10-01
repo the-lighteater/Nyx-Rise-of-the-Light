@@ -2,17 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
+    "C": {
+      "item": "nyx_rotl:crystal"
+    },
     "M": {
       "item": "nyx_rotl:meteor_ingot"
-    },
-    "S": {
-      "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "MMM",
-    "M S",
-    "  S"
+    " CC",
+    "C M",
+    "  M"
   ],
   "result": {
     "item": "nyx_rotl:scythe"

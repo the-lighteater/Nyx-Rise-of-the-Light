@@ -12,6 +12,8 @@ public class ModTags {
     public static class Blocks {
         public static final TagKey<Block> NEEDS_METEOR_TOOL = tag("needs_meteor_tool");
 
+        public static final TagKey<Block> NEEDS_GLEANING_TOOL = tag("needs_gleaning_tool");
+
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(NyxROTL.MODID, name));

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.05,
+  "group": "cracked_star_block",
+  "ingredient": {
+    "item": "nyx_rotl:star_block"
+  },
+  "result": "nyx_rotl:cracked_star_block"
+}

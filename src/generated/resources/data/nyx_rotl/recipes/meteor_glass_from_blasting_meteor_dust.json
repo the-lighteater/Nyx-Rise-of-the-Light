@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "category": "blocks",
+  "cookingtime": 100,
+  "experience": 0.05,
+  "group": "meteor_glass",
+  "ingredient": {
+    "item": "nyx_rotl:meteor_dust"
+  },
+  "result": "nyx_rotl:meteor_glass"
+}
