@@ -2,6 +2,7 @@ package dot.lighteater.nyx_rotl.blocks;
 
 import dot.lighteater.nyx_rotl.Config;
 import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
+import dot.lighteater.nyx_rotl.lunarevents.HarvestMoon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -27,7 +28,7 @@ public class CrystalBlockEntity extends BlockEntity {
             NyxWorld data = NyxWorld.get((ServerLevel) level);
 
             if (
-                    //data.currentEvent instanceof HarvestMoon &&
+                    data.getCurrentEvent() instanceof HarvestMoon &&
                     level.canSeeSky(pos.above())) {
 
                 be.durability = Math.min(

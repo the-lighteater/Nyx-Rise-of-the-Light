@@ -258,6 +258,8 @@ dependencies {
 //    runtimeOnly(fg.deobf("curse.maven:patchouli-306770:6164575"))
 //    runtimeOnly(fg.deobf("curse.maven:goetycataclysm-1224214:6723713"))
 //
+    compileOnly(fg.deobf("curse.maven:jade-324717:6855440"))
+
     runtimeOnly(fg.deobf("curse.maven:jade-324717:6855440"))
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
