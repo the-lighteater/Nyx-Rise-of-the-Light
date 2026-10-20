@@ -2,9 +2,12 @@ package dot.lighteater.nyx_rotl.event;
 
 import dot.lighteater.nyx_rotl.Config;
 import dot.lighteater.nyx_rotl.NyxROTL;
+import dot.lighteater.nyx_rotl.blocks.CrystalBlockEntity;
 import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
 import dot.lighteater.nyx_rotl.lunarevents.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.client.event.ViewportEvent;
@@ -110,6 +113,25 @@ public class ModClientEvents {
         event.getLeft().add(
                 "[" + NyxROTL.MODID + "] CurrEvent: " + name
         );
+
+        if (mc.level == null || mc.hitResult == null) {
+            return;
+        }
+
+        if (!(mc.hitResult instanceof net.minecraft.world.phys.BlockHitResult hit)) {
+            return;
+        }
+
+        BlockPos pos = hit.getBlockPos();
+
+        BlockEntity blockEntity = mc.level.getBlockEntity(pos);
+
+        if (!(blockEntity instanceof CrystalBlockEntity crystal)) {
+            return;
+        }
+
+        event.getLeft().add("");
+        event.getLeft().add("Crystal Durability: " + crystal.durability);
     }
 
     // ============================================================
