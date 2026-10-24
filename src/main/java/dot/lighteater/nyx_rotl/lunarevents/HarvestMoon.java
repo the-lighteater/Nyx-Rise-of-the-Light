@@ -1,6 +1,8 @@
 package dot.lighteater.nyx_rotl.lunarevents;
 
 import dot.lighteater.nyx_rotl.Config;
+import dot.lighteater.nyx_rotl.NyxROTL;
+import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
 import dot.lighteater.nyx_rotl.lunarevents.CelestialEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -81,6 +83,10 @@ public class HarvestMoon extends CelestialEvent {
             return;
         }
 
+        if (!name.equals(this.getCurrentEventName(serverLevel))) {
+            return;
+        }
+
         // Only grow crops while Harvest Moon is actually active.
         // The event manager controls this through currentEvent.
         if (Config.HARVEST_MOON_GROW_AMOUNT.get() <= 0) {
@@ -123,13 +129,14 @@ public class HarvestMoon extends CelestialEvent {
         int worldX = chunk.getPos().getMinBlockX() + localX;
         int worldZ = chunk.getPos().getMinBlockZ() + localZ;
 
-        BlockPos pos = level.getHeightmapPos(
+        BlockPos randomPos = level.getHeightmapPos(
                 net.minecraft.world.level.levelgen.Heightmap.Types.WORLD_SURFACE,
                 new BlockPos(worldX, 0, worldZ)
         );
 
-        BlockState state = level.getBlockState(pos);
+        BlockPos pos = randomPos.below();
 
+        BlockState state = level.getBlockState(pos);
         /*
          * Preserve the old behavior:
          *

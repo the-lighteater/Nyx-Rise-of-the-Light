@@ -1,8 +1,6 @@
 package dot.lighteater.nyx_rotl.network;
 
-import dot.lighteater.nyx_rotl.NyxROTL;
 import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -114,22 +112,6 @@ public class PacketNyxWorld {
             NyxWorld.clientEventSkyModifier =
                     msg.skyModifier;
 
-            // Debug celestial event data
-            NyxROTL.LOGGER.debug(
-                    "Client received currentEvent: {}",
-                    NyxWorld.clientCurrentEvent
-            );
-
-            NyxROTL.LOGGER.debug(
-                    "Client received eventSkyColor: {}",
-                    NyxWorld.clientEventSkyColor
-            );
-
-            NyxROTL.LOGGER.debug(
-                    "Client received eventSkyModifier: {}",
-                    NyxWorld.clientEventSkyModifier
-            );
-
             // Meteor data
             NyxWorld.clientMeteorLandingSites.clear();
             NyxWorld.clientMeteorLandingSites.addAll(
@@ -141,11 +123,6 @@ public class PacketNyxWorld {
                     msg.cachedMeteorPositions
             );
         });
-
-        NyxROTL.LOGGER.info(
-                "Client received celestial event: {}",
-                msg.event
-        );
 
         ctx.get().setPacketHandled(true);
     }

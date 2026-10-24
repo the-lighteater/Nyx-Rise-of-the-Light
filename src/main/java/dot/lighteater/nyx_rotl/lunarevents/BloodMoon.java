@@ -10,6 +10,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -96,7 +99,7 @@ public class BloodMoon extends CelestialEvent {
             return;
         }
 
-        if (!name.equals(getCurrentEventName(serverLevel))) {
+        if (!name.equals(this.getCurrentEventName(serverLevel))) {
             return;
         }
 
@@ -111,10 +114,6 @@ public class BloodMoon extends CelestialEvent {
         findChunksForSpawning(serverLevel);
     }
 
-    private String getCurrentEventName(ServerLevel level) {
-        return NyxWorld.get(level).currentEvent;
-    }
-
     private int findChunksForSpawning(ServerLevel level) {
         buildEligibleChunks(level);
 
@@ -126,16 +125,6 @@ public class BloodMoon extends CelestialEvent {
 
         BlockPos spawnPoint = level.getSharedSpawnPos();
 
-        /*
-         * The old method iterated EnumCreatureType.values().
-         *
-         * Since Blood Moon calls this with:
-         *
-         *     spawnHostileMobs = true
-         *     spawnPeacefulMobs = false
-         *
-         * we only need MONSTER here.
-         */
         MobCategory category = MobCategory.MONSTER;
 
         int existing = countMobs(level, category);
@@ -146,7 +135,7 @@ public class BloodMoon extends CelestialEvent {
                         * eligibleChunksForSpawning.size()
                         / MOB_COUNT_DIV;
 
-        if (existing > spawnCap) {
+        if (existing >= spawnCap) {
             return 0;
         }
 
@@ -180,13 +169,11 @@ public class BloodMoon extends CelestialEvent {
             for (int attempt = 0; attempt < 3; attempt++) {
 
                 int x = blockPos.getX();
-                int y = blockPos.getY();
                 int z = blockPos.getZ();
 
                 SpawnGroupData spawnData = null;
 
-                int attempts =
-                        1 + level.random.nextInt(4);
+                int attempts = 1 + level.random.nextInt(4);
 
                 for (int i = 0; i < attempts; i++) {
 
@@ -196,10 +183,32 @@ public class BloodMoon extends CelestialEvent {
                     z += level.random.nextInt(6)
                             - level.random.nextInt(6);
 
-                    // Old code effectively had no vertical
-                    // movement because nextInt(1) is always 0.
+                    // Recalculate the surface height at the new X/Z.
+                    int y = level.getHeight(
+                            net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                            x,
+                            z
+                    );
+
                     BlockPos.MutableBlockPos mutable =
                             new BlockPos.MutableBlockPos(x, y, z);
+
+                    BlockPos groundPos = mutable.below();
+
+                    BlockState groundState = level.getBlockState(groundPos);
+
+                    if (!level.getFluidState(mutable).isEmpty()
+                            || !level.getFluidState(groundPos).isEmpty()) {
+                        continue;
+                    }
+
+                    if (!groundState.isFaceSturdy(
+                            level,
+                            groundPos,
+                            net.minecraft.core.Direction.UP
+                    )) {
+                        continue;
+                    }
 
                     double spawnX = x + 0.5D;
                     double spawnZ = z + 0.5D;
@@ -308,6 +317,7 @@ public class BloodMoon extends CelestialEvent {
                             true
                     );
 
+                    mob.setPersistenceRequired();
 
                     mob.moveTo(
                             spawnX,
@@ -317,7 +327,6 @@ public class BloodMoon extends CelestialEvent {
                             0.0F
                     );
 
-                    NyxROTL.LOGGER.debug("Mob Spawned: {}", mob);
 
                     /*
                      * Forge's modern spawn-position check.
@@ -422,23 +431,11 @@ public class BloodMoon extends CelestialEvent {
         int z = chunkPos.getMinBlockZ()
                 + level.random.nextInt(16);
 
-        int maxY = level.getHeight(
+        int y = level.getHeight(
                 net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 x,
                 z
         );
-
-        if (maxY <= level.getMinBuildHeight()) {
-            return new BlockPos(
-                    x,
-                    level.getMinBuildHeight(),
-                    z
-            );
-        }
-
-        int y = level.random.nextInt(
-                Math.max(1, maxY - level.getMinBuildHeight())
-        ) + level.getMinBuildHeight();
 
         return new BlockPos(x, y, z);
     }

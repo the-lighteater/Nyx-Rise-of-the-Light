@@ -1,7 +1,9 @@
 package dot.lighteater.nyx_rotl.lunarevents;
 
+import dot.lighteater.nyx_rotl.capabilities.NyxWorld;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 
 public abstract class CelestialEvent {
@@ -96,6 +98,10 @@ public abstract class CelestialEvent {
 
     public float getMoonEclipseAngle() {
         return 0.0F;
+    }
+
+    public String getCurrentEventName(ServerLevel level) {
+        return NyxWorld.get(level).currentEvent;
     }
 
     /**

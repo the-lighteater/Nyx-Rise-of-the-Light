@@ -41,6 +41,7 @@ public class CrystalBlock extends BaseEntityBlock {
             return;
         }
 
+
         int range = 5;
 
         for (int x = -range; x <= range; x++) {
@@ -72,14 +73,7 @@ public class CrystalBlock extends BaseEntityBlock {
                         // Check whether the block changed as a result
                         if (level.getBlockState(offset) != targetState) {
 
-                            NyxROTL.LOGGER.debug(
-                                    "[Crystal] Growth detected at {}: {} -> {}",
-                                    offset,
-                                    level.getBlockState(offset),
-                                    targetState
-                            );
-
-                            crystal.durability--;
+                            crystal.setDurability(crystal.durability - 1);
 
                             if (crystal.durability <= 0) {
                                 return;
